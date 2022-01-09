@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -17,3 +18,15 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('sniff', function () {
+    $process = new Process(['./vendor/bin/php-cs-fixer', 'fix', '-vvv', '--dry-run', '--show-progress=dots']);
+    $process->run();
+    $this->comment($process->getOutput());
+})->purpose('Display files that need to reformat');
+
+Artisan::command('lint', function () {
+    $process = new Process(['./vendor/bin/php-cs-fixer', 'fix', '-vvv', '--show-progress=dots']);
+    $process->run();
+    $this->comment($process->getOutput());
+})->purpose('Perform the formatting fo files that need to reformat');
