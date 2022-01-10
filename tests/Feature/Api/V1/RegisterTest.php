@@ -2,9 +2,8 @@
 
 namespace Tests\Feature\Api\V1;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterTest extends TestCase
 {
@@ -43,7 +42,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function email_is_required()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => '',
             'password' => 'secret',
             'password_confirmation' => 'secret',
@@ -55,7 +54,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function email_must_be_valid()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'emailtest.com',
             'password' => 'secret',
             'password_confirmation' => 'secret',
@@ -63,11 +62,11 @@ class RegisterTest extends TestCase
 
         $response->assertJsonValidationErrors(['email']);
     }
-    
+
     /** @test */
     public function password_is_required()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '',
             'password_confirmation' => 'secret',
@@ -79,7 +78,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function password_must_be_more_than_or_equal_to_6()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '12345',
             'password_confirmation' => '12345',
@@ -91,7 +90,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function password_confirmation_must_be_more_than_or_equal_to_6()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => '12345',
@@ -103,7 +102,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function password_confirmation_is_required()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => '',
@@ -115,7 +114,7 @@ class RegisterTest extends TestCase
     /** @test */
     public function password_and_password_confirmation_muse_be_equal()
     {
-        $response = $this->json('post','/api/v1/register', [
+        $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => 'secret',
