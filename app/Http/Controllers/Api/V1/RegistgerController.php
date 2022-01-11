@@ -13,6 +13,7 @@ class RegistgerController extends Controller
         $request->validate([
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
+            'device_name' => 'nullable',
         ]);
 
         $user = User::create([
@@ -20,7 +21,9 @@ class RegistgerController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = $user->createToken('test-token')->plainTextToken;
+        $user->sendEmailVerificationNotification();
+
+        $token = $user->createToken($request->get('device_name', 'test-token'))->plainTextToken;
 
         return response()->json(['token' => $token]);
     }

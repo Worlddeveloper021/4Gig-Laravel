@@ -3,6 +3,8 @@
 namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterTest extends TestCase
@@ -12,6 +14,8 @@ class RegisterTest extends TestCase
     /** @test */
     public function user_can_register()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => 'secret',
@@ -41,11 +45,15 @@ class RegisterTest extends TestCase
         $this->json('get', 'api/user', [], ['Authorization' => 'Bearer '.$response->json('token')])
              ->assertOk()
              ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
+
+        Notification::assertSentTo(User::first(), \App\Notifications\VerifyEmail::class);
     }
 
     /** @test */
     public function email_is_required()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => '',
             'password' => 'secret',
@@ -53,11 +61,14 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['email']);
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function email_must_be_valid()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'emailtest.com',
             'password' => 'secret',
@@ -65,11 +76,15 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['email']);
+
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function password_is_required()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '',
@@ -77,11 +92,15 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['password']);
+
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function password_must_be_more_than_or_equal_to_6()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '12345',
@@ -89,11 +108,15 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['password']);
+
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function password_confirmation_must_be_more_than_or_equal_to_6()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
@@ -101,11 +124,15 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['password']);
+
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function password_confirmation_is_required()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
@@ -113,11 +140,15 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['password']);
+
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function password_and_password_confirmation_muse_be_equal()
     {
+        Notification::fake();
+
         $response = $this->json('post', '/api/v1/register', [
             'email' => 'test@test.com',
             'password' => '123456',
@@ -125,5 +156,7 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertJsonValidationErrors(['password']);
+
+        Notification::assertNothingSent();
     }
 }
