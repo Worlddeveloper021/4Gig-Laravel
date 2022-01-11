@@ -25,7 +25,7 @@ class LoginTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);
 
-        $response = $this->json('post', 'api/v1/login', [
+        $response = $this->json('post', route('v1.login'), [
             'email' => $this->user->email,
             'password' => 'password',
         ]);
@@ -47,7 +47,7 @@ class LoginTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);
 
-        $response = $this->json('post', 'api/v1/login', [
+        $response = $this->json('post', route('v1.login'), [
             'email' => 'email@test.com',
             'password' => 'password',
         ]);
@@ -65,7 +65,7 @@ class LoginTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);
 
-        $response = $this->json('post', 'api/v1/login', [
+        $response = $this->json('post', route('v1.login'), [
             'email' => $this->user->email,
             'password' => '12345678',
         ]);

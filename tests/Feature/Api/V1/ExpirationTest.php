@@ -17,7 +17,7 @@ class ExpirationTest extends TestCase
 
         $expiration_duration = config('sanctum.expiration', 0);
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => 'secret',
             'password_confirmation' => 'secret',

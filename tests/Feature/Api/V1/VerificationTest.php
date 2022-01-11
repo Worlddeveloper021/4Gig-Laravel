@@ -25,7 +25,7 @@ class VerificationTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->json('post', '/api/v1/verify', [
+        $response = $this->json('post', route('v1.verify'), [
             'verify_code' => '123456',
         ]);
 
@@ -43,7 +43,7 @@ class VerificationTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->json('post', '/api/v1/verify', [
+        $response = $this->json('post', route('v1.verify'), [
             'verify_code' => '654321',
         ]);
 

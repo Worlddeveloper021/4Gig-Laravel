@@ -16,7 +16,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => 'secret',
             'password_confirmation' => 'secret',
@@ -54,7 +54,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => '',
             'password' => 'secret',
             'password_confirmation' => 'secret',
@@ -71,7 +71,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'emailtest.com',
             'password' => 'secret',
             'password_confirmation' => 'secret',
@@ -88,7 +88,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => '',
             'password_confirmation' => 'secret',
@@ -105,7 +105,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => '12345',
             'password_confirmation' => '12345',
@@ -122,7 +122,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => '12345',
@@ -139,7 +139,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => '',
@@ -156,7 +156,7 @@ class RegisterTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->json('post', '/api/v1/register', [
+        $response = $this->json('post', route('v1.register'), [
             'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => 'secret',
