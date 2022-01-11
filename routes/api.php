@@ -11,7 +11,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::post('register', [RegistgerController::class, 'store']);
+    Route::post('register', RegistgerController::class);
     Route::post('login', LoginController::class);
     Route::post('verify', VerifyController::class);
 });
