@@ -52,7 +52,8 @@ class LoginTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'])
+            ->assertUnprocessable();
 
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);
@@ -69,7 +70,8 @@ class LoginTest extends TestCase
             'password' => '12345678',
         ]);
 
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'])
+            ->assertUnprocessable();
 
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);

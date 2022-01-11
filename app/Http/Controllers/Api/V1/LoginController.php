@@ -19,11 +19,11 @@ class LoginController extends Controller
         $user = User::whereEmail($validated_data['email'])->first();
 
         if (! $user) {
-            return response()->json(['errors' => ['email' => 'Email or Password Is Incorrect']]);
+            return response()->json(['errors' => ['email' => 'Email or Password Is Incorrect']], 422);
         }
 
         if (! Hash::check($validated_data['password'], $user->password)) {
-            return response()->json(['errors' => ['email' => 'Email or Password Is Incorrect']]);
+            return response()->json(['errors' => ['email' => 'Email or Password Is Incorrect']], 422);
         }
 
         $token = $user->createToken('test-token')->plainTextToken;

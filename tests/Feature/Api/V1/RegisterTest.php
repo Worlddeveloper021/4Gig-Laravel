@@ -23,8 +23,8 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionDoesntHaveErrors()
-                ->assertOk()
-                ->assertJsonStructure(['token']);
+            ->assertOk()
+            ->assertJsonStructure(['token']);
 
         $response_data = $response->json();
 
@@ -43,8 +43,8 @@ class RegisterTest extends TestCase
         ]);
 
         $this->json('get', 'api/user', [], ['Authorization' => 'Bearer '.$response->json('token')])
-             ->assertOk()
-             ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
+            ->assertOk()
+            ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
 
         Notification::assertSentTo(User::first(), \App\Notifications\VerifyEmail::class);
     }
@@ -60,7 +60,9 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'])
+            ->assertUnprocessable();
+
         Notification::assertNothingSent();
     }
 
@@ -75,7 +77,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['email']);
+        $response->assertJsonValidationErrors(['email'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -91,7 +94,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -107,7 +111,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => '12345',
         ]);
 
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -123,7 +128,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => '12345',
         ]);
 
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -139,7 +145,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => '',
         ]);
 
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -155,7 +162,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['password']);
+        $response->assertJsonValidationErrors(['password'])
+            ->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
