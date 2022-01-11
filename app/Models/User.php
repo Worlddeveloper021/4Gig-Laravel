@@ -44,4 +44,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \App\Notifications\VerifyEmail);
     }
+
+    public function is_valid_verify_code(string $verify_code)
+    {
+        return $this->verify_code === $verify_code;
+    }
 }
