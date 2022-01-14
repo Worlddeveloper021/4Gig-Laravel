@@ -21,7 +21,7 @@ class RegistgerController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
 
         $token = $user->createToken($request->get('device_name', 'test-token'))->plainTextToken;
 
