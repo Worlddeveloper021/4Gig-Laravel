@@ -16,4 +16,15 @@ class ResetPasswordNotification extends ResetPassword
     {
         return 'ok';
     }
+
+     /**
+     * Get the notification's channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array|string
+     */
+    public function via($notifiable)
+    {
+        return [/*'mail'*/];
+    }
 }
