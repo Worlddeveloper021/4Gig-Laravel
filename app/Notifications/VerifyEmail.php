@@ -6,7 +6,6 @@ use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
 
 class VerifyEmail extends BaseVerifyEmail
 {
-    
     /**
      * Get the verification URL for the given notifiable.
      *
