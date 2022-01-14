@@ -36,6 +36,8 @@ class RegisterTest extends TestCase
             'email_verified_at' => null,
         ]);
 
+        $this->assertNotNull(User::first()->verify_code);
+
         $this->assertDatabaseCount('personal_access_tokens', 1);
         $this->assertDatabaseHas('personal_access_tokens', [
             'tokenable_id' => $id,
@@ -46,7 +48,7 @@ class RegisterTest extends TestCase
             ->assertOk()
             ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
 
-        Notification::assertSentTo(User::first(), \App\Notifications\VerifyEmail::class);
+        Notification::assertSentTo(User::first(), \App\Notifications\VerifyEmailNotification::class);
     }
 
     /** @test */
