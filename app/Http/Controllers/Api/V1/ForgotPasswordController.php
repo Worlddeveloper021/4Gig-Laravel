@@ -37,8 +37,7 @@ class ForgotPasswordController extends Controller
 
         if ($password_reset->token !== $request->token) {
             return response()->json([
-                'message' => 'Invalid Token',
-                'success' => false,
+                'message' => 'The given data was invalid.',
                 'errors' => [
                     'token' => ['Invalid Token'],
                 ],

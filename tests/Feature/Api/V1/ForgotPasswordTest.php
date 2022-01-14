@@ -99,7 +99,7 @@ class ForgotPasswordTest extends TestCase
         ]);
 
         $response->assertUnprocessable()
-                ->assertJsonStructure(['message', 'success', 'errors' => ['token']]);
+                ->assertJsonStructure(['message', 'errors' => ['token']]);
     }
 
     /** @test */
