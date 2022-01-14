@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use DB;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,5 +16,19 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        $user = User::factory([
+            'email' => 'test@test.com',
+            'verify_code' => '123456',
+        ])->create();
+
+        $user->createToken('test-token');
+
+        DB::table('password_resets')->insert([
+            'email' => $user->email,
+            'token' => '123456',
+            'created_at' => now(),
+        ]);
+
     }
 }
