@@ -16,17 +16,17 @@ class VerifyController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
 
-        if ($user->is_valid_verify_code($validated_data['verify_code'])) {
-            $user->markEmailAsVerified();
+        $this->check_verify_code_is_correct($user, $validated_data['verify_code']);
 
-            return response()->json(['success' => true]);
+        $user->markEmailAsVerified();
+
+        return response()->json(['success' => true]);
+    }
+
+    private function check_verify_code_is_correct($user, $verify_code)
+    {
+        if (! $user->is_valid_verify_code($verify_code)) {
+            $this->validationError('verify_code', 'Verify Code Is Incorrect');
         }
-
-        return response()->json([
-            'message' => 'The given data was invalid.',
-             'errors' => [
-                 'verify_code' => ['The verify code is invalid.'],
-                ],
-            ], 422);
     }
 }

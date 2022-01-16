@@ -35,14 +35,7 @@ class ForgotPasswordController extends Controller
 
         $password_reset = DB::table('password_resets')->where('email', $request->email)->first();
 
-        if ($password_reset->token !== $request->token) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'token' => ['Invalid Token'],
-                ],
-            ], 422);
-        }
+        $this->token_is_correct($password_reset, $request->token);
 
         return response()->json([
             'message' => 'Token Verified',
@@ -65,5 +58,12 @@ class ForgotPasswordController extends Controller
             'message' => 'Password Reset Successfully',
             'success' => true,
         ]);
+    }
+
+    private function token_is_correct($password_reset, $token)
+    {
+        if ($password_reset->token != $token) {
+            $this->validationError('token', 'Token Is Incorrect');
+        }
     }
 }

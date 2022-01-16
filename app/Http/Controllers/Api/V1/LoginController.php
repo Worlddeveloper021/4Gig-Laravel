@@ -14,30 +14,31 @@ class LoginController extends Controller
         $validated_data = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'device_name' => 'nullable'
         ]);
 
         $user = User::whereEmail($validated_data['email'])->first();
 
-        if (! $user) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email' => ['Email or Password Is Incorrect'],
-                ],
-            ], 422);
-        }
+        $this->check_user_exists($user);
 
-        if (! Hash::check($validated_data['password'], $user->password)) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email' => ['Email or Password Is Incorrect'],
-                ],
-            ], 422);
-        }
+        $this->check_password_is_correct($user, $validated_data['password']);
 
-        $token = $user->createToken('test-token')->plainTextToken;
+        $token = $user->createToken($request->get('device_name', 'test-token'))->plainTextToken;
 
         return response()->json(['token' => $token]);
+    }
+
+    private function check_user_exists($user)
+    {
+        if (!$user) {
+            $this->validationError('email', 'Email or Password Is Incorrect');
+        }
+    }
+
+    private function check_password_is_correct($user, $password)
+    {
+        if (!Hash::check($password, $user->password)) {
+            $this->validationError('email', 'Email or Password Is Incorrect');
+        }
     }
 }
