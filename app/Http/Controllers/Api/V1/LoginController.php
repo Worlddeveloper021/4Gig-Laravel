@@ -18,21 +18,21 @@ class LoginController extends Controller
 
         $user = User::whereEmail($validated_data['email'])->first();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    'email' => ['Email or Password Is Incorrect']
-                ]
+                    'email' => ['Email or Password Is Incorrect'],
+                ],
             ], 422);
         }
 
-        if (!Hash::check($validated_data['password'], $user->password)) {
+        if (! Hash::check($validated_data['password'], $user->password)) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    'email' => ['Email or Password Is Incorrect']
-                ]
+                    'email' => ['Email or Password Is Incorrect'],
+                ],
             ], 422);
         }
 

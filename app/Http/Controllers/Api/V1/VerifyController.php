@@ -25,8 +25,8 @@ class VerifyController extends Controller
         return response()->json([
             'message' => 'The given data was invalid.',
              'errors' => [
-                 'verify_code' => ['The verify code is invalid.']
-                ]
+                 'verify_code' => ['The verify code is invalid.'],
+                ],
             ], 422);
     }
 }

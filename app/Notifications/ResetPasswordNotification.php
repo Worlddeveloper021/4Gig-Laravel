@@ -17,7 +17,7 @@ class ResetPasswordNotification extends ResetPassword
         return 'ok';
     }
 
-     /**
+    /**
      * Get the notification's channels.
      *
      * @param  mixed  $notifiable
