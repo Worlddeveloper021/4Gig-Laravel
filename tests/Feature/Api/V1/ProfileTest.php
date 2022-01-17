@@ -97,6 +97,18 @@ class ProfileTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function user_see_profile()
+    {
+        Sanctum::actingAs($this->user);
+
+        $profile = Profile::factory()->create(['user_id' => $this->user->id]);
+
+        $resoponse = $this->json('get', route('v1.profiles.show', $profile));
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure());
+    }
+
     protected function expected_structure()
     {
         return [
