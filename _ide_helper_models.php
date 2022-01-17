@@ -12,6 +12,21 @@
 
 namespace App\Models{
 /**
+ * App\Models\Profile
+ *
+ * @property-read mixed $gender_name
+ * @property-read mixed $type_name
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\ProfileFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile query()
+ */
+	class Profile extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\SocialAccount
  *
  * @property int $id
@@ -54,6 +69,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \App\Models\Profile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
