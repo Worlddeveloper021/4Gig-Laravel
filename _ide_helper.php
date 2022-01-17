@@ -16456,6 +16456,210 @@
      
 }
 
+    namespace Orion\Facades { 
+            /**
+     * 
+     *
+     * @method \Illuminate\Routing\PendingResourceRegistration morphByManyResource(string $resource, string $relation, string $controller, array $options = [])
+     * @see \Orion\Orion
+     */ 
+        class Orion {
+                    /**
+         * Registers new standard resource.
+         *
+         * @param string $name
+         * @param string $controller
+         * @param array $options
+         * @return \Illuminate\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function resource($name, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->resource($name, $controller, $options);
+        }
+                    /**
+         * Register new resource for "hasOne" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Illuminate\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function hasOneResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->hasOneResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "belongsTo" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function belongsToResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->belongsToResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "hasMany" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function hasManyResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->hasManyResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "belongsToMany" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function belongsToManyResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->belongsToManyResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "hasOneThrough" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function hasOneThroughResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->hasOneThroughResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "hasManyThrough" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function hasManyThroughResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->hasManyThroughResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "morphOne" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function morphOneResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->morphOneResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "morphMany" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function morphManyResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->morphManyResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "morphTo" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function morphToResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->morphToResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "morphToMany" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function morphToManyResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->morphToManyResource($resource, $relation, $controller, $options);
+        }
+                    /**
+         * Register new resource for "morphedByMany" relation.
+         *
+         * @param string $resource
+         * @param string $relation
+         * @param string $controller
+         * @param array $options
+         * @return \Orion\Http\Routing\PendingResourceRegistration 
+         * @throws BindingResolutionException
+         * @static 
+         */ 
+        public static function morphedByManyResource($resource, $relation, $controller, $options = [])
+        {
+                        /** @var \Orion\Orion $instance */
+                        return $instance->morphedByManyResource($resource, $relation, $controller, $options);
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Http { 
             /**
      * 
@@ -19964,6 +20168,7 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Socialite extends \Laravel\Socialite\Facades\Socialite {}
+            class Orion extends \Orion\Facades\Orion {}
      
 }
 
