@@ -32,7 +32,8 @@ class ProfileTest extends TestCase
         $resoponse = $this->json('post', route('v1.profiles.store'), array_merge($fake_data, [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]));
-        $resoponse->assertCreated();
+        $resoponse->assertCreated()
+            ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 1);
         $this->assertDatabaseHas('profiles', $fake_data + ['user_id' => $this->user->id]);
@@ -58,7 +59,8 @@ class ProfileTest extends TestCase
         $resoponse = $this->json('put', route('v1.profiles.update', $profile), array_merge($fake_data, [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]));
-        $resoponse->assertOk();
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 1);
         $this->assertDatabaseHas('profiles', $fake_data + ['user_id' => $this->user->id]);
@@ -80,7 +82,8 @@ class ProfileTest extends TestCase
         $profile = Profile::factory()->create(['user_id' => $this->user->id]);
 
         $resoponse = $this->json('delete', route('v1.profiles.destroy', $profile));
-        $resoponse->assertOk();
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 0);
         $this->assertDatabaseMissing('profiles', $profile->getAttributes());
@@ -92,5 +95,29 @@ class ProfileTest extends TestCase
             'collection_name' => Profile::COLLECTION_NAME,
             'name' => 'avatar',
         ]);
+    }
+
+    protected function expected_structure()
+    {
+        return [
+            'data' => [
+                'first_name',
+                'last_name',
+                'gender',
+                'nationality',
+                'profile_type',
+                'availability_on_demand',
+                'per_hour',
+                'avatar',
+                'user' => [
+                    'id',
+                    'username',
+                    'email',
+                    'email_verified_at',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+        ];
     }
 }

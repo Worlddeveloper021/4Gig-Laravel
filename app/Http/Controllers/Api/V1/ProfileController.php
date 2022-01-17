@@ -7,6 +7,7 @@ use Orion\Http\Requests\Request;
 use Orion\Http\Controllers\Controller;
 use Orion\Concerns\DisableAuthorization;
 use App\Http\Requests\Api\V1\ProfileRequest;
+use App\Http\Resources\Api\V1\ProfileResource;
 
 class ProfileController extends Controller
 {
@@ -15,6 +16,8 @@ class ProfileController extends Controller
     protected $model = Profile::class;
 
     protected $request = ProfileRequest::class;
+
+    protected $resource = ProfileResource::class;
 
     /**
      * @param Request $request
