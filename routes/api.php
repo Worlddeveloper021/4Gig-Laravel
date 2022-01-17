@@ -1,10 +1,12 @@
 <?php
 
 use App\Models\User;
+use Orion\Facades\Orion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\VerifyController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
@@ -24,4 +26,6 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('forgot-password/request', [ForgotPasswordController::class, 'request'])->name('forgot_password.request');
     Route::post('forgot-password/verify', [ForgotPasswordController::class, 'verify'])->name('forgot_password.verify');
     Route::post('forgot-password/reset', [ForgotPasswordController::class, 'reset'])->name('forgot_password.reset');
+
+    Orion::resource('profiles', ProfileController::class)->withoutBatch();
 });

@@ -14,7 +14,7 @@ class LoginController extends Controller
         $validated_data = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
-            'device_name' => 'nullable'
+            'device_name' => 'nullable',
         ]);
 
         $user = User::whereEmail($validated_data['email'])->first();
@@ -30,14 +30,14 @@ class LoginController extends Controller
 
     private function check_user_exists($user)
     {
-        if (!$user) {
+        if (! $user) {
             $this->validationError('email', 'Email or Password Is Incorrect');
         }
     }
 
     private function check_password_is_correct($user, $password)
     {
-        if (!Hash::check($password, $user->password)) {
+        if (! Hash::check($password, $user->password)) {
             $this->validationError('email', 'Email or Password Is Incorrect');
         }
     }
