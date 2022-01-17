@@ -24,14 +24,14 @@ class ProfileRequest extends Request
     public function storeRules(): array
     {
         return [
-            //
+            'avatar' => 'required | image',
         ];
     }
 
     public function updateRules(): array
     {
         return [
-            //
+            'avatar' => 'nullable | image',
         ];
     }
 }

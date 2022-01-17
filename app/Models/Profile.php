@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Profile extends Model
+class Profile extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'user_id',
@@ -23,6 +25,8 @@ class Profile extends Model
     protected $casts = [
         'availability_on_demand' => 'boolean',
     ];
+
+    const COLLECTION_NAME = 'avatar';
 
     const SELLER = 0;
 
@@ -52,9 +56,10 @@ class Profile extends Model
         self::BUYER => 'Buyer',
     ];
 
-    public function user()
+    public function registerMediaCollections(): void
     {
-        return $this->belongsTo(User::class);
+        $this->addMediaCollection(self::COLLECTION_NAME)
+            ->singleFile();
     }
 
     public function getTypeNameAttribute()
@@ -65,5 +70,10 @@ class Profile extends Model
     public function getGenderNameAttribute()
     {
         return self::GENDER_NAMES[$this->gender];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

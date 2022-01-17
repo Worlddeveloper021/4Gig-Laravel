@@ -24,4 +24,15 @@ class ProfileController extends Controller
     {
         $profile->user()->associate(auth()->user());
     }
+
+    /**
+     * @param Request $request
+     * @param Profile $profile
+     */
+    protected function afterSave(Request $request, $profile)
+    {
+        if ($request->has('avatar')) {
+            $profile->addMedia($request->avatar)->toMediaCollection(Profile::COLLECTION_NAME);
+        }
+    }
 }
