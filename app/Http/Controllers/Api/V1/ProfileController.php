@@ -20,6 +20,16 @@ class ProfileController extends Controller
     protected $resource = ProfileResource::class;
 
     /**
+     * The relations that are loaded by default together with a resource.
+     *
+     * @return array
+     */
+    public function alwaysIncludes() : array
+    {
+        return ['user', 'media'];
+    }
+
+    /**
      * @param Request $request
      * @param Profile $profile
      */

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use DB;
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,6 +29,10 @@ class DatabaseSeeder extends Seeder
             'email' => $user->email,
             'token' => '123456',
             'created_at' => now(),
+        ]);
+
+        Profile::factory()->create([
+            'user_id' => $user->id,
         ]);
     }
 }

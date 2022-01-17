@@ -23,8 +23,8 @@ class ProfileResource extends JsonResource
             'profile_type' => $this->type_name,
             'availability_on_demand' => $this->availability_on_demand,
             'per_hour' => $this->per_hour,
-            'avatar' => $this->getFirstMediaUrl(Profile::COLLECTION_NAME),
-            'user' => $this->user,
+            'avatar' => $this->when($this->relationLoaded('media'), $this->getFirstMediaUrl(Profile::COLLECTION_NAME)),
+            'user' => $this->whenLoaded('user'),
         ];
     }
 }
