@@ -30,6 +30,26 @@ class ProfileController extends Controller
     }
 
     /**
+     * The attributes that are used for filtering.
+     *
+     * @return array
+     */
+    public function filterableBy() : array
+    {
+        return [
+            'user_id',
+            'first_name',
+            'last_name',
+            'gender',
+            'nationality',
+            'profile_type',
+            'availability_on_demand',
+            'per_hour',
+            'created_at',
+        ];
+    }
+
+    /**
      * @param Request $request
      * @param Profile $profile
      */
