@@ -14,6 +14,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Welcome to the API',
+        'status' => 'success',
+    ]);
+});
+
 Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('/user/{user}/token', function (User $user) {
         return $user->createToken('test-token')->plainTextToken;
