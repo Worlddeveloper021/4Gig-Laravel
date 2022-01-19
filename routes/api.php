@@ -16,8 +16,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/', function () {
     return response()->json([
-        'message' => 'Welcome to the API Test Change',
-        'status' => 'success',
+        'message' => 'Welcome to the API Change !!!',
+        'status' => 'successfully Message',
     ]);
 });
 
