@@ -34,26 +34,6 @@ class UsersProfileController extends RelationController
     }
 
     /**
-     * The attributes that are used for filtering.
-     *
-     * @return array
-     */
-    public function filterableBy() : array
-    {
-        return [
-            'user_id',
-            'first_name',
-            'last_name',
-            'gender',
-            'nationality',
-            'profile_type',
-            'availability_on_demand',
-            'per_hour',
-            'created_at',
-        ];
-    }
-
-    /**
      * The hook is executed before creating or updating a relation resource.
      *
      * @param Request $request
