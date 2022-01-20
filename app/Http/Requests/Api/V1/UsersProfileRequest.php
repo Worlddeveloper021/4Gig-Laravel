@@ -6,7 +6,7 @@ use App\Models\Profile;
 use Illuminate\Validation\Rule;
 use Orion\Http\Requests\Request;
 
-class ProfileRequest extends Request
+class UsersProfileRequest extends Request
 {
     public function commonRules(): array
     {

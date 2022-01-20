@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\VerifyController;
-use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RegistgerController;
+use App\Http\Controllers\Api\V1\UsersProfileController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -34,5 +34,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('forgot-password/verify', [ForgotPasswordController::class, 'verify'])->name('forgot_password.verify');
     Route::post('forgot-password/reset', [ForgotPasswordController::class, 'reset'])->name('forgot_password.reset');
 
-    Orion::resource('profiles', ProfileController::class)->withoutBatch();
+    Route::middleware('auth:sanctum')->group(function () {
+        Orion::hasOneResource('users', 'profile', UsersProfileController::class)->withoutBatch();
+    });
 });

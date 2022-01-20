@@ -9,7 +9,7 @@ use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProfileTest extends TestCase
+class UsersProfileTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,11 +25,12 @@ class ProfileTest extends TestCase
     /** @test */
     public function user_can_create_profile()
     {
+        $this->withoutExceptionHandling();
         Sanctum::actingAs($this->user);
 
         $fake_data = Profile::factory()->definition();
 
-        $resoponse = $this->json('post', route('v1.profiles.store'), array_merge($fake_data, [
+        $resoponse = $this->json('post', route('v1.users.profile.store', $this->user), array_merge($fake_data, [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]));
         $resoponse->assertCreated()
@@ -50,13 +51,14 @@ class ProfileTest extends TestCase
     /** @test */
     public function user_can_update_profile()
     {
+        $this->withoutExceptionHandling();
         Sanctum::actingAs($this->user);
 
-        $profile = Profile::factory()->create(['user_id' => $this->user->id]);
+        Profile::factory()->create(['user_id' => $this->user->id]);
 
         $fake_data = Profile::factory()->definition();
 
-        $resoponse = $this->json('put', route('v1.profiles.update', $profile), array_merge($fake_data, [
+        $resoponse = $this->json('put', route('v1.users.profile.update', $this->user), array_merge($fake_data, [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]));
         $resoponse->assertOk()
@@ -81,7 +83,7 @@ class ProfileTest extends TestCase
 
         $profile = Profile::factory()->create(['user_id' => $this->user->id]);
 
-        $resoponse = $this->json('delete', route('v1.profiles.destroy', $profile));
+        $resoponse = $this->json('delete', route('v1.users.profile.destroy', $this->user));
         $resoponse->assertOk()
             ->assertJsonStructure($this->expected_structure());
 
@@ -102,9 +104,9 @@ class ProfileTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $profile = Profile::factory()->create(['user_id' => $this->user->id]);
+        Profile::factory()->create(['user_id' => $this->user->id]);
 
-        $resoponse = $this->json('get', route('v1.profiles.show', $profile));
+        $resoponse = $this->json('get', route('v1.users.profile.show', $this->user));
         $resoponse->assertOk()
             ->assertJsonStructure($this->expected_structure());
     }
