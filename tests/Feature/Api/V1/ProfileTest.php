@@ -172,11 +172,14 @@ class ProfileTest extends TestCase
         Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4))
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
             ->create(['user_id' => $this->user->id]);
 
         $resoponse = $this->json('get', route('v1.profile.show'));
+
         $resoponse->assertOk()
-            ->assertJsonStructure($this->expected_structure());
+            ->assertJsonStructure($this->expected_structure(true));
     }
 
     /** @test */
@@ -200,7 +203,7 @@ class ProfileTest extends TestCase
         $resoponse = $this->json('put', route('v1.profile.store.step_2'), $request_data);
 
         $resoponse->assertOk()
-            ->assertJsonStructure($this->expected_structure());
+            ->assertJsonStructure($this->expected_structure(true));
 
         $profile = Profile::first();
 
@@ -227,8 +230,19 @@ class ProfileTest extends TestCase
         ]);
     }
 
-    protected function expected_structure()
+    protected function expected_structure($has_category = false)
     {
+        $categories = (! $has_category) ? [] : [
+            'category' => [
+                'id',
+                'name',
+            ],
+            'sub_category' => [
+                'id',
+                'name',
+            ],
+        ];
+
         return [
             'first_name',
             'last_name',
@@ -243,8 +257,6 @@ class ProfileTest extends TestCase
                 'username',
                 'email',
                 'email_verified_at',
-                'created_at',
-                'updated_at',
             ],
             'skills' => [
                 '*' => [
@@ -258,11 +270,9 @@ class ProfileTest extends TestCase
                     'name',
                 ],
             ],
-            'category_name',
-            'sub_category_name',
             'description',
             'video_presentation',
             'portfolio',
-        ];
+        ] + $categories;
     }
 }
