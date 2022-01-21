@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use DB;
 use App\Models\User;
+use App\Models\Skill;
 use App\Models\Profile;
+use App\Models\SpokenLanguage;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,8 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
         $user = User::factory([
             'email' => 'test@test.com',
             'verify_code' => '123456',
@@ -31,8 +31,9 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-        Profile::factory()->create([
-            'user_id' => $user->id,
-        ]);
+        Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4))
+            ->create(['user_id' => $user->id]);
     }
 }
