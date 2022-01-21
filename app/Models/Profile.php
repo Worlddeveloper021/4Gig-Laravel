@@ -32,7 +32,9 @@ class Profile extends Model implements HasMedia
     ];
 
     const AVATAR_COLLECTION_NAME = 'avatar';
+
     const PRESENTATION_COLLECTION_NAME = 'presentation';
+
     const PORTFOLIO_COLLECTION_NAME = 'portfolio';
 
     const FEMALE = 0;
@@ -53,7 +55,7 @@ class Profile extends Model implements HasMedia
     {
         $this->addMediaCollection(self::AVATAR_COLLECTION_NAME)
             ->singleFile();
-            
+
         $this->addMediaCollection(self::PRESENTATION_COLLECTION_NAME)
             ->singleFile();
 

@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Api\V1;
 
-use App\Models\Category;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Profile;
+use App\Models\Category;
 use Laravel\Sanctum\Sanctum;
 use App\Models\SpokenLanguage;
 use Illuminate\Http\UploadedFile;
@@ -188,7 +188,7 @@ class ProfileTest extends TestCase
         Category::factory()
             ->has(Category::factory()->count(2), 'children')
             ->create();
-        
+
         $request_data = [
             'description' => 'this is a berif description',
             'category_id' => 1,

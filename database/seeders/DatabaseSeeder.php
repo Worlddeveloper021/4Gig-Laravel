@@ -6,6 +6,7 @@ use DB;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Profile;
+use App\Models\Category;
 use App\Models\SpokenLanguage;
 use Illuminate\Database\Seeder;
 
@@ -31,9 +32,17 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        $category = Category::factory()
+            ->has(Category::factory()->count(3), 'children')
+            ->create();
+
         Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4))
-            ->create(['user_id' => $user->id]);
+            ->create([
+                'user_id' => $user->id,
+                'category_id' => $category->id,
+                'sub_category_id' => $category->children->first()->id,
+            ]);
     }
 }
