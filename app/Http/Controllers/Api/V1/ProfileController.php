@@ -25,7 +25,7 @@ class ProfileController extends Controller
         }
 
         if ($request->has('avatar')) {
-            $profile->addMediaFromRequest('avatar')->toMediaCollection(Profile::COLLECTION_NAME);
+            $profile->addMedia($request->avatar)->toMediaCollection(Profile::COLLECTION_NAME);
         }
 
         if ($request->has('skills')) {
