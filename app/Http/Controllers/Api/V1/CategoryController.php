@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\V1\ProfileResource;
 use App\Http\Resources\Api\V1\CategoryResource;
 
 class CategoryController extends Controller
@@ -16,5 +17,12 @@ class CategoryController extends Controller
             : Category::root()->get();
 
         return response()->json(CategoryResource::collection($categories));
+    }
+
+    public function profiles_index(Request $request, Category $category)
+    {
+        $profiles = $category->profiles()->with('skills', 'spoken_languages')->get();
+
+        return response()->json(ProfileResource::collection($profiles));
     }
 }

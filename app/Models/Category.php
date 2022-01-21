@@ -28,4 +28,9 @@ class Category extends Model
     {
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
+
+    public function profiles()
+    {
+        return $this->hasMany(Profile::class);
+    }
 }

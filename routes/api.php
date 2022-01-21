@@ -35,6 +35,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('forgot-password/reset', [ForgotPasswordController::class, 'reset'])->name('forgot_password.reset');
 
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/{category}/profiles', [CategoryController::class, 'profiles_index'])->name('categories.profiles.index');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');

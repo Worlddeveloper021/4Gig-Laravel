@@ -14,7 +14,7 @@ class ProfileController extends Controller
     {
         $profile = auth()->user()->profile;
 
-        return response()->json(new ProfileResource($profile));
+        return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }
 
     public function store(ProfileRequest $request)
@@ -37,13 +37,13 @@ class ProfileController extends Controller
         }
 
         if ($request->has('spoken_languages')) {
-            $profile->spokenLanguages()->delete();
+            $profile->spoken_languages()->delete();
             foreach ($request->get('spoken_languages') as $language) {
-                $profile->spokenLanguages()->create(['name' => $language]);
+                $profile->spoken_languages()->create(['name' => $language]);
             }
         }
 
-        return response()->json(new ProfileResource($profile));
+        return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }
 
     public function store_step_2(Request $request)
@@ -72,6 +72,6 @@ class ProfileController extends Controller
             $profile->addMedia($request->portfolio)->toMediaCollection(Profile::PORTFOLIO_COLLECTION_NAME);
         }
 
-        return response()->json(new ProfileResource($profile));
+        return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }
 }

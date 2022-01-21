@@ -3,7 +3,11 @@
 namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Skill;
+use App\Models\Profile;
 use App\Models\Category;
+use App\Models\SpokenLanguage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CategoryTest extends TestCase
@@ -74,5 +78,78 @@ class CategoryTest extends TestCase
         });
 
         $response->assertJson($expected_data->toArray());
+    }
+
+    /** @test */
+    public function user_can_get_profiles_by_given_category()
+    {
+        $categories = Category::factory()
+            ->has(Category::factory()->count(2), 'children')
+            ->count(5)->create();
+
+        $category = $categories->random();
+
+        Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->for(User::factory())
+            ->count(10)
+            ->create([
+                'category_id' => $category->id,
+                'sub_category_id' => $category->children->first()->id,
+            ]);
+
+        $response = $this->json('get', route('v1.categories.profiles.index', ['category' => $category]));
+
+        $response->assertOk()
+            ->assertJsonStructure($this->expected_structure(true));
+    }
+
+    protected function expected_structure($has_category = false)
+    {
+        $categories = (! $has_category) ? [] : [
+            'category' => [
+                'id',
+                'name',
+            ],
+            'sub_category' => [
+                'id',
+                'name',
+            ],
+        ];
+
+        return [
+            '*' => [
+                'first_name',
+                'last_name',
+                'nationality',
+                'birth_date',
+                'gender',
+                'availability_on_demand',
+                'per_hour',
+                'avatar',
+                'user' => [
+                    'id',
+                    'username',
+                    'email',
+                    'email_verified_at',
+                ],
+                'skills' => [
+                    '*' => [
+                        'id',
+                        'name',
+                    ],
+                ],
+                'spoken_languages' => [
+                    '*' => [
+                        'id',
+                        'name',
+                    ],
+                ],
+                'description',
+                'video_presentation',
+                'portfolio',
+            ] + $categories,
+        ];
     }
 }

@@ -78,7 +78,7 @@ class Profile extends Model implements HasMedia
         return $this->hasMany(Skill::class);
     }
 
-    public function spokenLanguages()
+    public function spoken_languages()
     {
         return $this->hasMany(SpokenLanguage::class);
     }

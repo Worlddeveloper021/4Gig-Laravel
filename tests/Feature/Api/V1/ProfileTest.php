@@ -96,7 +96,7 @@ class ProfileTest extends TestCase
 
         $profile = Profile::factory()
             ->has(Skill::factory()->count(4))
-            ->has(SpokenLanguage::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->create(['user_id' => $this->user->id]);
 
         $this->assertDatabaseCount('profiles', 1);
@@ -171,7 +171,7 @@ class ProfileTest extends TestCase
 
         Profile::factory()
             ->has(Skill::factory()->count(4))
-            ->has(SpokenLanguage::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->for(Category::factory(), 'category')
             ->for(Category::factory(), 'sub_category')
             ->create(['user_id' => $this->user->id]);
