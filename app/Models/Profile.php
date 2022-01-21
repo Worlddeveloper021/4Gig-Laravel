@@ -15,9 +15,9 @@ class Profile extends Model implements HasMedia
         'user_id',
         'first_name',
         'last_name',
-        'gender',
         'nationality',
-        'profile_type',
+        'birth_date',
+        'gender',
         'availability_on_demand',
         'per_hour',
     ];
@@ -28,10 +28,6 @@ class Profile extends Model implements HasMedia
 
     const COLLECTION_NAME = 'avatar';
 
-    const SELLER = 0;
-
-    const BUYER = 1;
-
     const FEMALE = 0;
 
     const MALE = 1;
@@ -41,30 +37,15 @@ class Profile extends Model implements HasMedia
         self::MALE,
     ];
 
-    const TYPES = [
-        self::SELLER,
-        self::BUYER,
-    ];
-
     const GENDER_NAMES = [
         self::FEMALE => 'Female',
         self::MALE => 'Male',
-    ];
-
-    const TYPE_NAMES = [
-        self::SELLER => 'Seller',
-        self::BUYER => 'Buyer',
     ];
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::COLLECTION_NAME)
             ->singleFile();
-    }
-
-    public function getTypeNameAttribute()
-    {
-        return self::TYPE_NAMES[$this->profile_type];
     }
 
     public function getGenderNameAttribute()
@@ -75,5 +56,15 @@ class Profile extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function spokenLanguages()
+    {
+        return $this->hasMany(SpokenLanguage::class);
     }
 }

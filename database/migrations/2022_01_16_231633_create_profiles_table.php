@@ -18,11 +18,11 @@ class CreateProfilesTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('first_name');
             $table->string('last_name');
-            $table->unsignedTinyInteger('gender');
             $table->string('nationality');
-            $table->unsignedTinyInteger('profile_type')->index();
-            $table->unsignedTinyInteger('availability_on_demand')->index()->nullable();
-            $table->unsignedInteger('per_hour')->index()->nullable();
+            $table->string('birth_date');
+            $table->unsignedTinyInteger('gender');
+            $table->unsignedTinyInteger('availability_on_demand')->index();
+            $table->unsignedInteger('per_hour')->index();
             $table->timestamps();
         });
     }

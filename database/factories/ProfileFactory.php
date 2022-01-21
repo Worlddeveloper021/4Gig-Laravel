@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProfileFactory extends Factory
@@ -15,20 +14,18 @@ class ProfileFactory extends Factory
      */
     public function definition()
     {
-        $profile_type = rand(0, 1);
-
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
+            'nationality' => $this->faker->country(),
+            'birth_date' => $this->faker->date(),
             'gender' => rand(0, 1),
-            'nationality' => $this->faker->countryCode(),
-            'profile_type' => $profile_type,
-            'availability_on_demand' => ($profile_type === Profile::SELLER) ? rand(0, 1) : null,
-            'per_hour' => ($profile_type === Profile::SELLER) ? rand(10, 100) : null,
+            'availability_on_demand' => rand(0, 1),
+            'per_hour' => rand(10, 500),
         ];
     }
 
-    public function hasUser()
+    public function has_user()
     {
         return $this->state(function () {
             return [
