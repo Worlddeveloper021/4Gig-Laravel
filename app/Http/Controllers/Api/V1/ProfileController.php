@@ -26,10 +26,6 @@ class ProfileController extends Controller
             auth()->user()->update(['username' => $request->username]);
         }
 
-        if ($request->has('avatar')) {
-            $profile->addMedia($request->avatar)->toMediaCollection(Profile::AVATAR_COLLECTION_NAME);
-        }
-
         if ($request->has('skills')) {
             $profile->skills()->delete();
             foreach ($request->get('skills') as $skill) {
@@ -64,14 +60,6 @@ class ProfileController extends Controller
             'category_id' => $request->category_id,
             'sub_category_id' => $request->sub_category_id,
         ]);
-
-        if ($request->has('video_presentation')) {
-            $profile->addMedia($request->video_presentation)->toMediaCollection(Profile::PRESENTATION_COLLECTION_NAME);
-        }
-
-        if ($request->has('portfolio')) {
-            $profile->addMedia($request->portfolio)->toMediaCollection(Profile::PORTFOLIO_COLLECTION_NAME);
-        }
 
         return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }

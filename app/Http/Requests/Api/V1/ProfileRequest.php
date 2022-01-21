@@ -24,7 +24,6 @@ class ProfileRequest extends FormRequest
             'gender' => ['required', Rule::in(Profile::GENDERS)],
             'availability_on_demand' => 'required',
             'per_hour' => 'required',
-            'avatar' => 'nullable | image',
             'skills' => 'nullable | array',
             'spoken_languages' => 'nullable | array',
         ];
