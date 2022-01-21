@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $category = Category::factory()
-            ->has(Category::factory()->count(3), 'children')
-            ->create();
+            ->has(Category::factory()->count(5), 'children')
+            ->count(6)->create();
 
         Profile::factory()
             ->has(Skill::factory()->count(4))

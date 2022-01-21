@@ -14,6 +14,11 @@ class Category extends Model
         'parent_id',
     ];
 
+    public function scopeRoot($query)
+    {
+        $query->where('parent_id', null);
+    }
+
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id');

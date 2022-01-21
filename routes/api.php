@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\VerifyController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
@@ -32,6 +33,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('forgot-password/request', [ForgotPasswordController::class, 'request'])->name('forgot_password.request');
     Route::post('forgot-password/verify', [ForgotPasswordController::class, 'verify'])->name('forgot_password.verify');
     Route::post('forgot-password/reset', [ForgotPasswordController::class, 'reset'])->name('forgot_password.reset');
+
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
