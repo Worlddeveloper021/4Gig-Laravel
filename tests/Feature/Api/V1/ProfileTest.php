@@ -90,7 +90,6 @@ class ProfileTest extends TestCase
             ->create(['user_id' => $this->user->id]);
 
         $this->assertDatabaseCount('profiles', 1);
-        $this->assertDatabaseCount('media', 0);
         $this->assertDatabaseCount('skills', 4);
         $this->assertDatabaseCount('spoken_languages', 4);
 
@@ -198,7 +197,6 @@ class ProfileTest extends TestCase
     public function user_can_upload_avatar()
     {
         Sanctum::actingAs($this->user);
-        $this->assertDatabaseCount('media', 0);
 
         $response = $this->json('post', route('v1.profile.upload_file'), [
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
@@ -206,7 +204,6 @@ class ProfileTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertDatabaseCount('media', 1);
         $this->assertDatabaseHas('media', [
             'model_type' => User::class,
             'model_id' => User::first()->id,
@@ -221,15 +218,12 @@ class ProfileTest extends TestCase
         Sanctum::actingAs($this->user);
         $profile = Profile::factory()->create(['user_id' => $this->user->id]);
 
-        $this->assertDatabaseCount('media', 0);
-
         $response = $this->json('post', route('v1.profile.upload_file'), [
             'video_presentation' => UploadedFile::fake()->create('video.mp4'),
         ]);
 
         $response->assertOk();
 
-        $this->assertDatabaseCount('media', 1);
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => $profile->id,
@@ -244,15 +238,12 @@ class ProfileTest extends TestCase
         Sanctum::actingAs($this->user);
         $profile = Profile::factory()->create(['user_id' => $this->user->id]);
 
-        $this->assertDatabaseCount('media', 0);
-
         $response = $this->json('post', route('v1.profile.upload_file'), [
             'portfolio' => UploadedFile::fake()->create('portfolio.pdf'),
         ]);
 
         $response->assertOk();
 
-        $this->assertDatabaseCount('media', 1);
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => $profile->id,
