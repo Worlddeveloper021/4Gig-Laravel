@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +25,7 @@ class ProfileResource extends JsonResource
             'gender' => $this->gender_name,
             'availability_on_demand' => $this->availability_on_demand,
             'per_hour' => $this->per_hour,
-            'avatar' => $this->getFirstMediaUrl(Profile::AVATAR_COLLECTION_NAME),
+            'avatar' => $this->user->getFirstMediaUrl(User::AVATAR_COLLECTION_NAME),
             'user' => UserResource::make($this->user),
             'skills' => SkillResource::collection($this->whenLoaded('skills')),
             'spoken_languages' => SpokenLanguageResource::collection($this->whenLoaded('spoken_languages')),

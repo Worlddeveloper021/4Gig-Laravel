@@ -32,7 +32,6 @@ class ProfileTest extends TestCase
 
         $fake_data = Profile::factory()->definition();
 
-        $avatar = UploadedFile::fake()->image('avatar.jpg');
         $username = 'new_username';
 
         $skills = [
@@ -44,7 +43,6 @@ class ProfileTest extends TestCase
         ];
 
         $request_data = array_merge($fake_data, [
-            'avatar' => $avatar,
             'skills' => $skills,
             'spoken_languages' => $spoken_languages,
             'username' => $username,
@@ -62,14 +60,6 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'username' => $username,
-        ]);
-
-        $this->assertDatabaseCount('media', 1);
-        $this->assertDatabaseHas('media', [
-            'model_type' => Profile::class,
-            'model_id' => $profile->id,
-            'collection_name' => Profile::AVATAR_COLLECTION_NAME,
-            'name' => 'avatar',
         ]);
 
         $this->assertDatabaseCount('skills', 4);
@@ -106,7 +96,6 @@ class ProfileTest extends TestCase
 
         $fake_data = Profile::factory()->definition();
 
-        $avatar = UploadedFile::fake()->image('avatar.jpg');
         $username = 'new_username';
 
         $skills = [
@@ -118,7 +107,6 @@ class ProfileTest extends TestCase
         ];
 
         $request_data = array_merge($fake_data, [
-            'avatar' => $avatar,
             'skills' => $skills,
             'spoken_languages' => $spoken_languages,
             'username' => $username,
@@ -137,14 +125,6 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,
             'username' => $username,
-        ]);
-
-        $this->assertDatabaseCount('media', 1);
-        $this->assertDatabaseHas('media', [
-            'model_type' => Profile::class,
-            'model_id' => Profile::first()->id,
-            'collection_name' => Profile::AVATAR_COLLECTION_NAME,
-            'name' => 'avatar',
         ]);
 
         $this->assertDatabaseCount('skills', 4);
@@ -196,8 +176,6 @@ class ProfileTest extends TestCase
             'description' => 'this is a berif description',
             'category_id' => 1,
             'sub_category_id' => 2,
-            'video_presentation' => UploadedFile::fake()->create('video.mp4'),
-            'portfolio' => UploadedFile::fake()->create('portfolio.pdf'),
         ];
 
         $resoponse = $this->json('put', route('v1.profile.store.step_2'), $request_data);
@@ -214,14 +192,67 @@ class ProfileTest extends TestCase
             'category_id' => 1,
             'sub_category_id' => 2,
         ]);
+    }
 
+    /** @test */
+    public function user_can_upload_avatar()
+    {
+        Sanctum::actingAs($this->user);
+        $this->assertDatabaseCount('media', 0);
+
+        $response = $this->json('post', route('v1.profile.upload_file'), [
+            'avatar' => UploadedFile::fake()->image('avatar.jpg'),
+        ]);
+
+        $response->assertOk();
+
+        $this->assertDatabaseCount('media', 1);
+        $this->assertDatabaseHas('media', [
+            'model_type' => User::class,
+            'model_id' => User::first()->id,
+            'collection_name' => User::AVATAR_COLLECTION_NAME,
+            'name' => 'avatar',
+        ]);
+    }
+
+    /** @test */
+    public function user_can_upload_video_presentation()
+    {
+        Sanctum::actingAs($this->user);
+        $profile = Profile::factory()->create(['user_id' => $this->user->id]);
+
+        $this->assertDatabaseCount('media', 0);
+
+        $response = $this->json('post', route('v1.profile.upload_file'), [
+            'video_presentation' => UploadedFile::fake()->create('video.mp4'),
+        ]);
+
+        $response->assertOk();
+
+        $this->assertDatabaseCount('media', 1);
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => $profile->id,
             'collection_name' => Profile::PRESENTATION_COLLECTION_NAME,
             'name' => 'video',
         ]);
+    }
 
+    /** @test */
+    public function user_can_upload_portfolio()
+    {
+        Sanctum::actingAs($this->user);
+        $profile = Profile::factory()->create(['user_id' => $this->user->id]);
+
+        $this->assertDatabaseCount('media', 0);
+
+        $response = $this->json('post', route('v1.profile.upload_file'), [
+            'portfolio' => UploadedFile::fake()->create('portfolio.pdf'),
+        ]);
+
+        $response->assertOk();
+
+        $this->assertDatabaseCount('media', 1);
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => $profile->id,

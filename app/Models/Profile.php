@@ -31,8 +31,6 @@ class Profile extends Model implements HasMedia
         'availability_on_demand' => 'boolean',
     ];
 
-    const AVATAR_COLLECTION_NAME = 'avatar';
-
     const PRESENTATION_COLLECTION_NAME = 'presentation';
 
     const PORTFOLIO_COLLECTION_NAME = 'portfolio';
@@ -53,9 +51,6 @@ class Profile extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(self::AVATAR_COLLECTION_NAME)
-            ->singleFile();
-
         $this->addMediaCollection(self::PRESENTATION_COLLECTION_NAME)
             ->singleFile();
 

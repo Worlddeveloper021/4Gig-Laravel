@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -73,5 +74,34 @@ class ProfileController extends Controller
         }
 
         return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
+    }
+
+    public function upload_file(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'nullable | file',
+            'video_presentation' => 'nullable | file',
+            'portfolio' => 'nullable | file',
+        ]);
+
+        if ($request->has('avatar')) {
+            auth()->user()->addMedia($request->avatar)->toMediaCollection(User::AVATAR_COLLECTION_NAME);
+
+            return response()->json(['message' => 'success']);
+        }
+
+        if (! auth()->user()->profile) {
+            return $this->validationError('error', 'Profile not found');
+        }
+
+        if ($request->has('video_presentation')) {
+            auth()->user()->profile->addMedia($request->video_presentation)->toMediaCollection(Profile::PRESENTATION_COLLECTION_NAME);
+        }
+
+        if ($request->has('portfolio')) {
+            auth()->user()->profile->addMedia($request->portfolio)->toMediaCollection(Profile::PORTFOLIO_COLLECTION_NAME);
+        }
+
+        return response()->json(['message' => 'success']);
     }
 }
