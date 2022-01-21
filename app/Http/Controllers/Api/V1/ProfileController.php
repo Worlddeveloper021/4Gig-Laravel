@@ -9,6 +9,13 @@ use App\Http\Resources\Api\V1\ProfileResource;
 
 class ProfileController extends Controller
 {
+    public function show()
+    {
+        $profile = auth()->user()->profile;
+
+        return response()->json(new ProfileResource($profile));
+    }
+
     public function store(ProfileRequest $request)
     {
         $profile = Profile::updateOrCreate(['user_id' => auth()->id()], $request->validated());
@@ -35,6 +42,6 @@ class ProfileController extends Controller
             }
         }
 
-        return response()->json(new ProfileResource($profile), 200);
+        return response()->json(new ProfileResource($profile));
     }
 }

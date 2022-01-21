@@ -123,7 +123,7 @@ class ProfileTest extends TestCase
             'username' => $username,
         ]);
 
-        $resoponse = $this->json('post', route('v1.profile.store'), $request_data);
+        $resoponse = $this->json('put', route('v1.profile.store'), $request_data);
         $resoponse->assertOk()
             ->assertJsonStructure($this->expected_structure());
 
@@ -161,6 +161,21 @@ class ProfileTest extends TestCase
                 'name' => $language,
             ]);
         }
+    }
+
+    /** @test */
+    public function user_can_get_profile()
+    {
+        Sanctum::actingAs($this->user);
+
+        Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4))
+            ->create(['user_id' => $this->user->id]);
+
+        $resoponse = $this->json('get', route('v1.profile.show'));
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure());
     }
 
     protected function expected_structure()

@@ -34,6 +34,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('forgot-password/reset', [ForgotPasswordController::class, 'reset'])->name('forgot_password.reset');
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::match(['post', 'put'], 'user/profile', [ProfileController::class, 'store'])->name('profile.store');
+        Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+        Route::match(['post', 'put'], 'profile', [ProfileController::class, 'store'])->name('profile.store');
     });
 });
