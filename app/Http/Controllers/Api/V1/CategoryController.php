@@ -21,8 +21,8 @@ class CategoryController extends Controller
 
     public function profiles_index(Request $request, Category $category)
     {
-        $profiles = $category->profiles()->with('skills', 'spoken_languages')->get();
+        $profiles = $category->profiles()->with('skills', 'spoken_languages')->paginate();
 
-        return response()->json(ProfileResource::collection($profiles));
+        return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
     }
 }

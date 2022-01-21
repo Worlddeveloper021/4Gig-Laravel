@@ -119,37 +119,55 @@ class CategoryTest extends TestCase
         ];
 
         return [
-            '*' => [
-                'first_name',
-                'last_name',
-                'nationality',
-                'birth_date',
-                'gender',
-                'availability_on_demand',
-                'per_hour',
-                'avatar',
-                'user' => [
-                    'id',
-                    'username',
-                    'email',
-                    'email_verified_at',
-                ],
-                'skills' => [
-                    '*' => [
+            'data' => [
+                '*' => [
+                    'first_name',
+                    'last_name',
+                    'nationality',
+                    'birth_date',
+                    'gender',
+                    'availability_on_demand',
+                    'per_hour',
+                    'avatar',
+                    'user' => [
                         'id',
-                        'name',
+                        'username',
+                        'email',
+                        'email_verified_at',
                     ],
-                ],
-                'spoken_languages' => [
-                    '*' => [
-                        'id',
-                        'name',
+                    'skills' => [
+                        '*' => [
+                            'id',
+                            'name',
+                        ],
                     ],
-                ],
-                'description',
-                'video_presentation',
-                'portfolio',
-            ] + $categories,
+                    'spoken_languages' => [
+                        '*' => [
+                            'id',
+                            'name',
+                        ],
+                    ],
+                    'description',
+                    'video_presentation',
+                    'portfolio',
+                ] + $categories,
+            ],
+            'links' => [
+                'first',
+                'last',
+                'prev',
+                'next',
+            ],
+            'meta' => [
+                'current_page',
+                'last_page',
+                'from',
+                'to',
+                'path',
+                'per_page',
+                'total',
+                'links',
+            ],
         ];
     }
 }
