@@ -24,10 +24,15 @@ class ProfileResource extends JsonResource
             'gender' => $this->gender_name,
             'availability_on_demand' => $this->availability_on_demand,
             'per_hour' => $this->per_hour,
-            'avatar' => $this->getFirstMediaUrl(Profile::COLLECTION_NAME),
+            'avatar' => $this->getFirstMediaUrl(Profile::AVATAR_COLLECTION_NAME),
             'user' => $this->user,
             'skills' => $this->skills,
             'spoken_languages' => $this->spokenLanguages,
+            'description' => $this->description ?? '',
+            'category_name' => $this->category->name ?? null,
+            'sub_category_name' => $this->sub_category->name ?? null,
+            'video_presentation' => $this->getFirstMediaUrl(Profile::PRESENTATION_COLLECTION_NAME),
+            'portfolio' => $this->getFirstMediaUrl(Profile::PORTFOLIO_COLLECTION_NAME),
         ];
     }
 }

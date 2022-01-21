@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Models\Category;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Skill;
@@ -67,7 +68,7 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => $profile->id,
-            'collection_name' => Profile::COLLECTION_NAME,
+            'collection_name' => Profile::AVATAR_COLLECTION_NAME,
             'name' => 'avatar',
         ]);
 
@@ -142,7 +143,7 @@ class ProfileTest extends TestCase
         $this->assertDatabaseHas('media', [
             'model_type' => Profile::class,
             'model_id' => Profile::first()->id,
-            'collection_name' => Profile::COLLECTION_NAME,
+            'collection_name' => Profile::AVATAR_COLLECTION_NAME,
             'name' => 'avatar',
         ]);
 
@@ -178,6 +179,54 @@ class ProfileTest extends TestCase
             ->assertJsonStructure($this->expected_structure());
     }
 
+    /** @test */
+    public function user_can_complete_profile_step_2()
+    {
+        Sanctum::actingAs($this->user);
+
+        Profile::factory()->create(['user_id' => $this->user->id]);
+        Category::factory()
+            ->has(Category::factory()->count(2), 'children')
+            ->create();
+        
+        $request_data = [
+            'description' => 'this is a berif description',
+            'category_id' => 1,
+            'sub_category_id' => 2,
+            'video_presentation' => UploadedFile::fake()->create('video.mp4'),
+            'portfolio' => UploadedFile::fake()->create('portfolio.pdf'),
+        ];
+
+        $resoponse = $this->json('put', route('v1.profile.store.step_2'), $request_data);
+
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure());
+
+        $profile = Profile::first();
+
+        $this->assertDatabaseHas('profiles', [
+            'id' => $profile->id,
+            'user_id' => $this->user->id,
+            'description' => 'this is a berif description',
+            'category_id' => 1,
+            'sub_category_id' => 2,
+        ]);
+
+        $this->assertDatabaseHas('media', [
+            'model_type' => Profile::class,
+            'model_id' => $profile->id,
+            'collection_name' => Profile::PRESENTATION_COLLECTION_NAME,
+            'name' => 'video',
+        ]);
+
+        $this->assertDatabaseHas('media', [
+            'model_type' => Profile::class,
+            'model_id' => $profile->id,
+            'collection_name' => Profile::PORTFOLIO_COLLECTION_NAME,
+            'name' => 'portfolio',
+        ]);
+    }
+
     protected function expected_structure()
     {
         return [
@@ -209,6 +258,11 @@ class ProfileTest extends TestCase
                     'name',
                 ],
             ],
+            'category_name',
+            'sub_category_name',
+            'description',
+            'video_presentation',
+            'portfolio',
         ];
     }
 }

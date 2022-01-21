@@ -20,13 +20,20 @@ class Profile extends Model implements HasMedia
         'gender',
         'availability_on_demand',
         'per_hour',
+        'category_id',
+        'sub_category_id',
+        'description',
+        'video_presentation',
+        'portfolio',
     ];
 
     protected $casts = [
         'availability_on_demand' => 'boolean',
     ];
 
-    const COLLECTION_NAME = 'avatar';
+    const AVATAR_COLLECTION_NAME = 'avatar';
+    const PRESENTATION_COLLECTION_NAME = 'presentation';
+    const PORTFOLIO_COLLECTION_NAME = 'portfolio';
 
     const FEMALE = 0;
 
@@ -44,7 +51,13 @@ class Profile extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(self::COLLECTION_NAME)
+        $this->addMediaCollection(self::AVATAR_COLLECTION_NAME)
+            ->singleFile();
+            
+        $this->addMediaCollection(self::PRESENTATION_COLLECTION_NAME)
+            ->singleFile();
+
+        $this->addMediaCollection(self::PORTFOLIO_COLLECTION_NAME)
             ->singleFile();
     }
 
@@ -66,5 +79,15 @@ class Profile extends Model implements HasMedia
     public function spokenLanguages()
     {
         return $this->hasMany(SpokenLanguage::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function sub_category()
+    {
+        return $this->belongsTo(Category::class, 'sub_category_id');
     }
 }

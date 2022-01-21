@@ -23,6 +23,9 @@ class CreateProfilesTable extends Migration
             $table->unsignedTinyInteger('gender');
             $table->unsignedTinyInteger('availability_on_demand')->index();
             $table->unsignedInteger('per_hour')->index();
+            $table->text('description')->nullable();
+            $table->foreignId('category_id')->nullable()->constrained('categories');
+            $table->foreignId('sub_category_id')->nullable()->constrained('categories');
             $table->timestamps();
         });
     }

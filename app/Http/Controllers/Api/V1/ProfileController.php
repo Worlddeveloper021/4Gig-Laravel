@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Profile;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProfileRequest;
 use App\Http\Resources\Api\V1\ProfileResource;
@@ -25,7 +26,7 @@ class ProfileController extends Controller
         }
 
         if ($request->has('avatar')) {
-            $profile->addMedia($request->avatar)->toMediaCollection(Profile::COLLECTION_NAME);
+            $profile->addMedia($request->avatar)->toMediaCollection(Profile::AVATAR_COLLECTION_NAME);
         }
 
         if ($request->has('skills')) {
@@ -40,6 +41,35 @@ class ProfileController extends Controller
             foreach ($request->get('spoken_languages') as $language) {
                 $profile->spokenLanguages()->create(['name' => $language]);
             }
+        }
+
+        return response()->json(new ProfileResource($profile));
+    }
+
+    public function store_step_2(Request $request)
+    {
+        $request->validate([
+            'description' => 'nullable',
+            'category_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'required|exists:categories,id',
+            'video_presentation' => 'nullable | file',
+            'portfolio' => 'nullable | file',
+        ]);
+
+        $profile = auth()->user()->profile;
+
+        $profile->update([
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'sub_category_id' => $request->sub_category_id,
+        ]);
+
+        if ($request->has('video_presentation')) {
+            $profile->addMedia($request->video_presentation)->toMediaCollection(Profile::PRESENTATION_COLLECTION_NAME);
+        }
+
+        if ($request->has('portfolio')) {
+            $profile->addMedia($request->portfolio)->toMediaCollection(Profile::PORTFOLIO_COLLECTION_NAME);
         }
 
         return response()->json(new ProfileResource($profile));
