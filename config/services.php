@@ -30,8 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'client_id' => '475923740117-fpn64p2almld4gf271adcah9gfh89bor.apps.googleusercontent.com',
+        'client_secret' => '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',
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
     'facebook' => [
@@ -40,8 +40,8 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
     'linkedin' => [
-        'client_id' => env('LINKEDIN_CLIENT_ID'),
-        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'client_id' => '77zjrhn8mshjbf',
+        'client_secret' => 'yGBz1bol37TidjJX',
         'redirect' => env('LINKEDIN_REDIRECT_URI'),
     ],
 ];
