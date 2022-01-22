@@ -1,6 +1,6 @@
 <?php
 
-    return [
+return [
 
         /*
         |--------------------------------------------------------------------------
@@ -134,6 +134,6 @@
         */
 
         'middleware' => [
-            Protoqol\Prequel\Http\Middleware\Authorised::class,
+            App\Http\Middleware\PrequelMiddleware::class,
         ],
     ];
