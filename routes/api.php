@@ -26,6 +26,10 @@ Route::name('v1.')->prefix('v1')->group(function () {
         return $user->createToken('test-token')->plainTextToken;
     });
 
+    Route::get('/social/credentials/{provider}', function ($provider) {
+        return config("services.$provider");
+    });
+
     Route::post('register', RegistgerController::class)->name('register');
     Route::post('login', LoginController::class)->name('login');
     Route::post('verify', VerifyController::class)->middleware('auth:sanctum')->name('verify');
