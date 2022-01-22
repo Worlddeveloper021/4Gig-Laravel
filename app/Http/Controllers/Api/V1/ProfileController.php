@@ -15,6 +15,10 @@ class ProfileController extends Controller
     {
         $profile = auth()->user()->profile;
 
+        if (! $profile) {
+            return $this->validationError('error', 'Profile not found.');
+        }
+
         return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }
 
