@@ -22,9 +22,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
         'email',
+        'mobile',
+        'username',
         'password',
+        'verify_code',
     ];
 
     /**
@@ -96,5 +98,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function profile()
     {
         return $this->hasOne(Profile::class);
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\VerifyController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
@@ -40,6 +41,9 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('categories/{category}/profiles', [CategoryController::class, 'profiles_index'])->name('categories.profiles.index');
+
+    Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
+    Route::post('customers/verify', [CustomerController::class, 'verify'])->name('customers.verify');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
