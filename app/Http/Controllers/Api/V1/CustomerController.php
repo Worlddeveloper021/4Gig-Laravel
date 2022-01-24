@@ -40,6 +40,12 @@ class CustomerController extends Controller
 
         $user = User::where('mobile', $request->mobile)->first();
 
+        if (! $user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
         if ($user->is_valid_verify_code($request->verify_code)) {
             $user->mobile_verified_at = now();
             $user->save();
