@@ -33,7 +33,7 @@ return [
                 | The Phone number registered with Twilio that your SMS & Calls will come from
                 |
                 */
-                'from' => env('TWILIO_FROM', '+52 55 3433 8291'),
+                'from' => env('TWILIO_FROM', '+15005550006'),
             ],
         ],
     ],
