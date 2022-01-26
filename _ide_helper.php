@@ -16032,7 +16032,70 @@
      
 }
 
-        namespace Facade\Ignition\Facades { 
+        namespace Aloha\Twilio\Support\Laravel { 
+            /**
+     * 
+     *
+     */ 
+        class Facade {
+                    /**
+         * 
+         *
+         * @param string $connection
+         * @return \Aloha\Twilio\TwilioInterface 
+         * @static 
+         */ 
+        public static function from($connection)
+        {
+                        /** @var \Aloha\Twilio\Manager $instance */
+                        return $instance->from($connection);
+        }
+                    /**
+         * 
+         *
+         * @param string $to
+         * @param string $message
+         * @param array $mediaUrls
+         * @param array $params
+         * @return \Twilio\Rest\Api\V2010\Account\MessageInstance 
+         * @static 
+         */ 
+        public static function message($to, $message, $mediaUrls = [], $params = [])
+        {
+                        /** @var \Aloha\Twilio\Manager $instance */
+                        return $instance->message($to, $message, $mediaUrls, $params);
+        }
+                    /**
+         * 
+         *
+         * @param string $to
+         * @param callable|string|\Twilio\TwiML\TwiML $message
+         * @param array $params
+         * @return \Twilio\Rest\Api\V2010\Account\CallInstance 
+         * @static 
+         */ 
+        public static function call($to, $message, $params = [])
+        {
+                        /** @var \Aloha\Twilio\Manager $instance */
+                        return $instance->call($to, $message, $params);
+        }
+                    /**
+         * 
+         *
+         * @return \Aloha\Twilio\TwilioInterface 
+         * @static 
+         */ 
+        public static function defaultConnection()
+        {
+                        /** @var \Aloha\Twilio\Manager $instance */
+                        return $instance->defaultConnection();
+        }
+         
+    }
+     
+}
+
+    namespace Facade\Ignition\Facades { 
             /**
      * Class Flare.
      *
@@ -20230,6 +20293,7 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
+            class Twilio extends \Aloha\Twilio\Support\Laravel\Facade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Socialite extends \Laravel\Socialite\Facades\Socialite {}
