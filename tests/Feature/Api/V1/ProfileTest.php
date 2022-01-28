@@ -162,6 +162,22 @@ class ProfileTest extends TestCase
     }
 
     /** @test */
+    public function user_can_see_profile_by_id()
+    {
+        $profile = Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
+            ->create(['user_id' => $this->user->id]);
+
+        $resoponse = $this->json('get', route('v1.profile.show_by_id', $profile->id));
+
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure(true));
+    }
+
+    /** @test */
     public function user_can_complete_profile_step_2()
     {
         Sanctum::actingAs($this->user);
@@ -265,7 +281,7 @@ class ProfileTest extends TestCase
             ],
         ];
 
-        return [
+        return array_merge([
             'first_name',
             'last_name',
             'nationality',
@@ -295,6 +311,7 @@ class ProfileTest extends TestCase
             'description',
             'video_presentation',
             'portfolio',
-        ] + $categories;
+            'rate',
+        ], $categories);
     }
 }

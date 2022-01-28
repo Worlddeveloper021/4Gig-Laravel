@@ -34,6 +34,8 @@ class ProfileResource extends JsonResource
             'sub_category' => CategoryResource::make($this->sub_category),
             'video_presentation' => $this->getFirstMediaUrl(Profile::PRESENTATION_COLLECTION_NAME),
             'portfolio' => $this->getFirstMediaUrl(Profile::PORTFOLIO_COLLECTION_NAME),
+            'rate' => rand(1, 5), // TODO: get from DB
+            // 'rate' => $this->rate,
         ];
     }
 }

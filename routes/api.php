@@ -45,6 +45,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
     Route::post('customers/verify', [CustomerController::class, 'verify'])->name('customers.verify');
 
+    Route::get('profile/{profile}', [ProfileController::class, 'show_by_id'])->name('profile.show_by_id');
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');

@@ -11,6 +11,11 @@ use App\Http\Resources\Api\V1\ProfileResource;
 
 class ProfileController extends Controller
 {
+    public function show_by_id(Profile $profile)
+    {
+        return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
+    }
+
     public function show()
     {
         $profile = auth()->user()->profile;

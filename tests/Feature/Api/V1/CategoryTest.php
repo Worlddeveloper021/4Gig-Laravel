@@ -150,6 +150,7 @@ class CategoryTest extends TestCase
                     'description',
                     'video_presentation',
                     'portfolio',
+                    'rate',
                 ] + $categories,
             ],
             'links' => [
