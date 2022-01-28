@@ -16,7 +16,7 @@ class ProfileFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Profile $profile) {
-            $file = storage_path('app/avatar.jpg');
+            $file = storage_path('app/assets/avatar.jpg');
 
             $profile
                 ->user
