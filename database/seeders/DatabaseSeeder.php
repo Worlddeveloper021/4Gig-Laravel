@@ -32,9 +32,26 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-        $categories = Category::factory()
-            ->has(Category::factory()->count(5), 'children')
-            ->count(6)->create();
+        $category_names = [
+            'Lawyer',
+            'Doctor',
+            'Psicologist',
+            'Mechanic',
+            'Veterinarian',
+            'Home Repair',
+        ];
+
+        foreach ($category_names as $category_name) {
+            $category = Category::create([
+                'name' => $category_name,
+            ]);
+
+            Category::factory()->count(5)->create([
+                'parent_id' => $category->id,
+            ]);
+        }
+
+        $categories = Category::root()->with('children')->get();
 
         Profile::factory()
             ->has(Skill::factory()->count(4))
