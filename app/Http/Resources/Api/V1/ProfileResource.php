@@ -34,7 +34,7 @@ class ProfileResource extends JsonResource
             'sub_category' => CategoryResource::make($this->sub_category),
             'video_presentation' => $this->getFirstMediaUrl(Profile::PRESENTATION_COLLECTION_NAME),
             'portfolio' => $this->getFirstMediaUrl(Profile::PORTFOLIO_COLLECTION_NAME),
-            'rate' => round($this->reviews()->avg('rate'), 1),
+            'rate' => number_format(round($this->reviews()->avg('rate'), 1, PHP_ROUND_HALF_DOWN), 1),
             'rate_count' => $this->reviews()->count(),
         ];
     }
