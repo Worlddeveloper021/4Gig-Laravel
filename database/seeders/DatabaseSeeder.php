@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use DB;
 use App\Models\User;
 use App\Models\Skill;
+use App\Models\Review;
 use App\Models\Profile;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\SpokenLanguage;
 use Illuminate\Database\Seeder;
 
@@ -56,6 +58,7 @@ class DatabaseSeeder extends Seeder
         Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->has(Review::factory()->count(5), 'reviews')
             ->count(20)
             ->sequence(fn ($sequence) => [
                 'user_id' => User::factory()->create()->id,
@@ -63,7 +66,7 @@ class DatabaseSeeder extends Seeder
                 'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
             ])->create();
 
-        Profile::factory()
+        $profile = Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->create([
@@ -71,5 +74,12 @@ class DatabaseSeeder extends Seeder
                 'category_id' => $categories[0]->id,
                 'sub_category_id' => $categories[0]->children->first()->id,
             ]);
+
+        $customers = Customer::factory()->count(5)->create();
+
+        Review::factory()->count(10)->create([
+            'customer_id' => $customers->first()->id,
+            'profile_id' => $profile->id,
+        ]);
     }
 }

@@ -23,4 +23,9 @@ class Customer extends Model
     {
         return $this->hasOne(Card::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

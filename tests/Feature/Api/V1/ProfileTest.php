@@ -53,7 +53,7 @@ class ProfileTest extends TestCase
             ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 1);
-        $this->assertDatabaseHas('profiles', $fake_data + ['user_id' => $this->user->id]);
+        $this->assertDatabaseHas('profiles', array_merge($fake_data, ['user_id' => $this->user->id]));
 
         $profile = Profile::first();
 
@@ -116,10 +116,10 @@ class ProfileTest extends TestCase
             ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 1);
-        $this->assertDatabaseHas('profiles', $fake_data + [
+        $this->assertDatabaseHas('profiles', array_merge($fake_data, [
             'user_id' => $this->user->id,
             'id' => $profile->id,
-        ]);
+        ]));
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,

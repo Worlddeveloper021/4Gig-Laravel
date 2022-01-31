@@ -40,6 +40,7 @@ class ProfileFactory extends Factory
             'gender' => rand(0, 1),
             'availability_on_demand' => rand(0, 1),
             'per_hour' => rand(10, 500),
+            'user_id' => User::factory()->create()->id,
         ];
     }
 }

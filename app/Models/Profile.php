@@ -87,4 +87,9 @@ class Profile extends Model implements HasMedia
     {
         return $this->belongsTo(Category::class, 'sub_category_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
