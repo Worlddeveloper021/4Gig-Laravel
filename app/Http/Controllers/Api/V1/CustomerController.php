@@ -60,4 +60,28 @@ class CustomerController extends Controller
 
         return $this->validationError('verify_code', 'Invalid verification code');
     }
+
+    public function store_card(Request $request)
+    {
+        $validated_data = $request->validate([
+            'name' => 'required',
+            'card_number' => 'required',
+            'expiry_date' => 'required',
+            'cvc' => 'required',
+        ]);
+
+        if (! $customer = auth()->user()->customer) {
+            return $this->validationError('customer', 'Customer not found');
+        }
+
+        if ($customer->card()->exists()) {
+            return $this->validationError('card', 'Card already exists');
+        }
+
+        $customer->card()->create($validated_data);
+
+        return response()->json([
+            'message' => 'Card successfully stored',
+        ]);
+    }
 }

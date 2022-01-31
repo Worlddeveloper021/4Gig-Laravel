@@ -52,5 +52,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');
         Route::match(['post', 'put'], 'profile', [ProfileController::class, 'store'])->name('profile.store');
         Route::put('profile/step-2', [ProfileController::class, 'store_step_2'])->name('profile.store.step_2');
+
+        Route::post('customers/card', [CustomerController::class, 'store_card'])->name('customers.card.store');
     });
 });

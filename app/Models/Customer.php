@@ -13,4 +13,14 @@ class Customer extends Model
         'name',
         'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function card()
+    {
+        return $this->hasOne(Card::class);
+    }
 }
