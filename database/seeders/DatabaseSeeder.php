@@ -6,6 +6,7 @@ use DB;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Review;
+use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Category;
 use App\Models\Customer;
@@ -55,20 +56,10 @@ class DatabaseSeeder extends Seeder
 
         $categories = Category::root()->with('children')->get();
 
-        Profile::factory()
-            ->has(Skill::factory()->count(4))
-            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
-            ->has(Review::factory()->count(5), 'reviews')
-            ->count(20)
-            ->sequence(fn ($sequence) => [
-                'user_id' => User::factory()->create()->id,
-                'category_id' => $categories[$sequence->index % 6]->id,
-                'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
-            ])->create();
-
         $profile = Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->has(Package::factory()->count(5), 'packages')
             ->create([
                 'user_id' => $user->id,
                 'category_id' => $categories[0]->id,
@@ -81,5 +72,16 @@ class DatabaseSeeder extends Seeder
             'customer_id' => $customers->first()->id,
             'profile_id' => $profile->id,
         ]);
+
+        Profile::factory()
+        ->has(Skill::factory()->count(4))
+        ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+        ->has(Review::factory()->count(5), 'reviews')
+        ->count(20)
+        ->sequence(fn ($sequence) => [
+            'user_id' => User::factory()->create()->id,
+            'category_id' => $categories[$sequence->index % 6]->id,
+            'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
+        ])->create();
     }
 }

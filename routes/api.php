@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\VerifyController;
+use App\Http\Controllers\Api\V1\PackageController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
@@ -50,11 +51,15 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::get('profile/{profile}', [ProfileController::class, 'show_by_id'])->name('profile.show_by_id');
 
+    Route::get('profile/{profile}/packages', [PackageController::class, 'show'])->name('profile.package.show');
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');
         Route::match(['post', 'put'], 'profile', [ProfileController::class, 'store'])->name('profile.store');
         Route::put('profile/step-2', [ProfileController::class, 'store_step_2'])->name('profile.store.step_2');
+
+        Route::post('profile/packages', [PackageController::class, 'store'])->name('profile.package.store');
 
         Route::post('customers/card', [CustomerController::class, 'store_card'])->name('customers.card.store');
         Route::post('reviews/{profile}', [ReviewController::class, 'store'])->name('reviews.store');
