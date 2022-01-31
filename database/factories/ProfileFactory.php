@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProfileFactory extends Factory
@@ -41,6 +42,9 @@ class ProfileFactory extends Factory
             'availability_on_demand' => rand(0, 1),
             'per_hour' => rand(10, 500),
             'user_id' => User::factory()->create()->id,
+            'description' => $this->faker->paragraph(),
+            'category_id' => $category_id = Category::factory()->create()->id,
+            'sub_category_id' => Category::factory()->create(['parent_id' => $category_id])->id,
         ];
     }
 }

@@ -26,6 +26,9 @@ class ProfileRequest extends FormRequest
             'per_hour' => 'required',
             'skills' => 'nullable | array',
             'spoken_languages' => 'nullable | array',
+            'description' => 'nullable',
+            'category_id' => 'required | exists:categories,id',
+            'sub_category_id' => 'required | exists:categories,id',
         ];
     }
 }
