@@ -38,7 +38,7 @@ class LoginTest extends TestCase
 
         $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])
              ->assertOk()
-             ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
+             ->assertJsonStructure(['id', 'username', 'email', 'mobile', 'email_verified_at', 'mobile_verified_at', 'is_online']);
     }
 
     /** @test */

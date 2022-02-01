@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\VerifyController;
@@ -23,7 +24,7 @@ Route::get('/', function () {
 
 Route::name('v1.')->prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
+        return response()->json(UserResource::make($request->user()));
     })->name('user.current');
 
     Route::get('/user/{user}/token', function (User $user) {
