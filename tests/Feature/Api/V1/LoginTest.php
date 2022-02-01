@@ -36,7 +36,7 @@ class LoginTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 1);
 
-        $this->json('get', 'api/user', [], ['Authorization' => 'Bearer '.$response->json('token')])
+        $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])
              ->assertOk()
              ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
     }

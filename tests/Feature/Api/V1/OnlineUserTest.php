@@ -37,7 +37,7 @@ class OnlineUserTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->json('get', '/api/user')->assertOk();
+        $this->json('get', route('v1.user.current'))->assertOk();
 
         $this->assertTrue($user->is_online());
 
@@ -47,7 +47,7 @@ class OnlineUserTest extends TestCase
         $this->travelTo(now()->addMinutes(2));
         $this->assertFalse($user->is_online());
 
-        $this->json('get', '/api/user')->assertOk();
+        $this->json('get', route('v1.user.current'))->assertOk();
         $this->assertTrue($user->is_online());
     }
 

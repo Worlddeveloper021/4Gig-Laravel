@@ -14,10 +14,6 @@ use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\OnlineUserController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/', function () {
     return response()->json([
         'message' => 'Welcome to the API Change !!!',
@@ -26,6 +22,10 @@ Route::get('/', function () {
 });
 
 Route::name('v1.')->prefix('v1')->group(function () {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    })->name('user.current');
+
     Route::get('/user/{user}/token', function (User $user) {
         return $user->createToken('test-token')->plainTextToken;
     });

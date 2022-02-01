@@ -29,7 +29,7 @@ class ExpirationTest extends TestCase
 
         $this->travelTo(now()->addMinutes($expiration_duration + 1));
 
-        $this->json('get', 'api/user', [], ['Authorization' => 'Bearer '.$response->json('token')])
+        $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])
              ->assertUnauthorized();
     }
 }

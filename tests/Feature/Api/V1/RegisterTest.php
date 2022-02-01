@@ -44,7 +44,7 @@ class RegisterTest extends TestCase
             'name' => 'test-token',
         ]);
 
-        $this->json('get', 'api/user', [], ['Authorization' => 'Bearer '.$response->json('token')])
+        $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])
             ->assertOk()
             ->assertJsonStructure(['id', 'email', 'created_at', 'updated_at']);
 
