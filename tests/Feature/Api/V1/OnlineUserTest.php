@@ -50,4 +50,24 @@ class OnlineUserTest extends TestCase
         $this->json('get', '/api/user')->assertOk();
         $this->assertTrue($user->is_online());
     }
+
+    /** @test */
+    public function get_online_users()
+    {
+        User::factory()
+            ->count(5)
+            ->create();
+
+        User::factory()
+            ->count(10)
+            ->create()
+            ->each(function ($user) {
+                $user->record_last_activity();
+            });
+
+        $response = $this->json('get', route('v1.users.online'));
+        $response->assertOk();
+
+        $response->assertJsonCount(10);
+    }
 }

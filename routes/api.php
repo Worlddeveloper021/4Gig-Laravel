@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\RegistgerController;
+use App\Http\Controllers\Api\V1\OnlineUserController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -52,6 +53,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('profile/{profile}', [ProfileController::class, 'show_by_id'])->name('profile.show_by_id');
 
     Route::get('profile/{profile}/packages', [PackageController::class, 'show'])->name('profile.package.show');
+
+    Route::get('users/online', [OnlineUserController::class, 'index'])->name('users.online');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
