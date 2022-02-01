@@ -5,6 +5,7 @@ namespace App\Models;
 use DB;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -50,6 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     const AVATAR_COLLECTION_NAME = 'avatar';
 
+    const ONLINE_CACHE_KEY = 'user_is_online_';
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::AVATAR_COLLECTION_NAME)
@@ -93,6 +96,21 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function is_valid_verify_code(string $verify_code)
     {
         return $this->verify_code === $verify_code;
+    }
+
+    public function record_last_activity()
+    {
+        Cache::set(self::ONLINE_CACHE_KEY.$this->id, true, now()->addMinutes(2));
+    }
+
+    public function is_online()
+    {
+        return Cache::has(self::ONLINE_CACHE_KEY.$this->id);
+    }
+
+    public function getIsOnlineAttribute()
+    {
+        return $this->is_online();
     }
 
     public function profile()
