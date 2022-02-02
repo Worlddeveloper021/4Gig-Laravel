@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\OnlineUserController;
+use App\Http\Controllers\Api\V1\AccessTokenController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
 Route::get('/', function () {
@@ -67,5 +68,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
         Route::post('customers/card', [CustomerController::class, 'store_card'])->name('customers.card.store');
         Route::post('reviews/{profile}', [ReviewController::class, 'store'])->name('reviews.store');
+
+        Route::get('call/access-token/voice', [AccessTokenController::class, 'voice'])->name('call.access-token.voice');
+        Route::get('call/access-token/video', [AccessTokenController::class, 'video'])->name('call.access-token.video');
     });
 });
