@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\OnlineUserController;
 use App\Http\Controllers\Api\V1\AccessTokenController;
+use App\Http\Controllers\Api\V1\SocialAccountController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
 Route::get('/', function () {
@@ -58,6 +59,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('profile/{profile}/packages', [PackageController::class, 'show'])->name('profile.package.show');
 
     Route::get('users/online', [OnlineUserController::class, 'index'])->name('users.online');
+
+    Route::post('social-accounts/{provider}', [SocialAccountController::class, 'store'])->name('social-accounts.store');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');

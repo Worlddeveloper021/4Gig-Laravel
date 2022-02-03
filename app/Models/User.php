@@ -122,4 +122,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         return $this->hasOne(Customer::class);
     }
+
+    public function social_accounts()
+    {
+        return $this->hasOne(SocialAccount::class);
+    }
 }
