@@ -5,24 +5,28 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'mobile' => 'required|unique:users,mobile',
+            'password' => 'required | min:6',
         ]);
 
         $user = User::create([
             'mobile' => $request->mobile,
+            'password' => Hash::make($request->password),
             'verify_code' => rand(100000, 1000000 - 1),
         ]);
 
-        $user->customer()->create([
-            'name' => $request->name,
-        ]);
+        $user->customer()->create(
+            $request->only(['first_name', 'last_name'])
+        );
 
         $user->notify(new \App\Notifications\VerifyCustomerNotification($user));
 
@@ -82,6 +86,36 @@ class CustomerController extends Controller
 
         return response()->json([
             'message' => 'Card successfully stored',
+        ]);
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'mobile' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('mobile', $request->mobile)->first();
+
+        if (! $user) {
+            return $this->validationError('mobile', 'Mobile or Password is Incorrect');
+        }
+
+        if (! Hash::check($request->password, $user->password)) {
+            return $this->validationError('mobile', 'Mobile or Password is Incorrect');
+        }
+
+        if (! $user->mobile_verified_at) {
+            return $this->validationError('mobile', 'Mobile number not verified');
+        }
+
+        $token = $user->createToken(
+            $request->get('device_name', 'test-token')
+        )->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
         ]);
     }
 }

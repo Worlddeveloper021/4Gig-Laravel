@@ -49,6 +49,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
     Route::post('customers/verify', [CustomerController::class, 'verify'])->name('customers.verify');
+    Route::post('customers/login', [CustomerController::class, 'login'])->name('customers.login');
 
     Route::get('reviews/{profile}', [ReviewController::class, 'show'])->name('reviews.show');
 
