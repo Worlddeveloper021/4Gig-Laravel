@@ -43,6 +43,8 @@ class ProfileTest extends TestCase
         ];
 
         $request_data = array_merge($fake_data, [
+            'category_id' => $category_id = Category::factory()->create()->id,
+            'sub_category_id' => Category::factory()->create(['parent_id' => $category_id])->id,
             'skills' => $skills,
             'spoken_languages' => $spoken_languages,
             'username' => $username,
@@ -106,6 +108,8 @@ class ProfileTest extends TestCase
         ];
 
         $request_data = array_merge($fake_data, [
+            'category_id' => $category_id = Category::factory()->create()->id,
+            'sub_category_id' => Category::factory()->create(['parent_id' => $category_id])->id,
             'skills' => $skills,
             'spoken_languages' => $spoken_languages,
             'username' => $username,
