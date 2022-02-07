@@ -28,12 +28,18 @@ class LoginTest extends TestCase
         $response = $this->json('post', route('v1.login'), [
             'email' => $this->user->email,
             'password' => 'password',
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $response->assertOk()
                  ->assertJsonStructure(['token']);
 
         $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseHas('users', [
+            'email' => $this->user->email,
+            'fcm_key' => '::fcm_key::',
+        ]);
+
         $this->assertDatabaseCount('personal_access_tokens', 1);
 
         $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])

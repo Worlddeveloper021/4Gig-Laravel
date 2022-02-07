@@ -15,11 +15,18 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
             'device_name' => 'nullable',
+            'fcm_key' => 'nullable',
         ]);
 
         $user = User::whereEmail($validated_data['email'])->first();
 
         $this->check_user_exists($user);
+
+        if ($request->has('fcm_key')) {
+            $user->update(
+                $request->only('fcm_key')
+            );
+        }
 
         $this->check_password_is_correct($user, $validated_data['password']);
 

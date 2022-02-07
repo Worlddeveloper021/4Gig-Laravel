@@ -77,9 +77,15 @@ class CustomerTest extends TestCase
         $response = $this->json('post', route('v1.customers.login'), [
             'mobile' => $user->mobile,
             'password' => 'password',
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $response->assertOk()
             ->assertJsonStructure(['token']);
+
+        $this->assertDatabaseHas('users', [
+            'mobile' => $user->mobile,
+            'fcm_key' => '::fcm_key::',
+        ]);
     }
 }

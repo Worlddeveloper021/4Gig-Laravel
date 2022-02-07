@@ -96,12 +96,19 @@ class CustomerController extends Controller
         $request->validate([
             'mobile' => 'required',
             'password' => 'required',
+            'fcm_key' => 'nullable',
         ]);
 
         $user = User::where('mobile', $request->mobile)->first();
 
         if (! $user) {
             return $this->validationError('mobile', 'Mobile or Password is Incorrect');
+        }
+
+        if ($request->has('fcm_key')) {
+            $user->update(
+                $request->only('fcm_key')
+            );
         }
 
         if (! Hash::check($request->password, $user->password)) {

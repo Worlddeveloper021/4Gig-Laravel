@@ -27,6 +27,7 @@ class User extends Authenticatable implements HasMedia
         'username',
         'password',
         'verify_code',
+        'fcm_key',
     ];
 
     /**
@@ -37,6 +38,7 @@ class User extends Authenticatable implements HasMedia
     protected $hidden = [
         'password',
         'verify_code',
+        'fcm_key',
     ];
 
     /**
