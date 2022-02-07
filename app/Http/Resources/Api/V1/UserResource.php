@@ -22,6 +22,8 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'mobile_verified_at' => $this->mobile_verified_at,
             'is_online' => $this->is_online,
+            'profile' => $this->when($this->profile, $this->profile),
+            'customer' => $this->when($this->customer, CustomerResource::make($this->customer)),
         ];
     }
 }
