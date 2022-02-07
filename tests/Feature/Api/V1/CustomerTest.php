@@ -21,6 +21,7 @@ class CustomerTest extends TestCase
         $response = $this->json('post', route('v1.customers.store'), [
             'first_name' => 'John',
             'last_name' => 'Doe',
+            'email' => 'test@test.com',
             'mobile' => '0123456789',
             'password' => 'password',
         ]);
@@ -29,6 +30,7 @@ class CustomerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'mobile' => '0123456789',
+            'email' => 'test@test.com',
         ]);
 
         $user = User::first();

@@ -14,12 +14,14 @@ class CustomerController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
+            'email' => 'nullable|email|unique:users',
             'mobile' => 'required|unique:users,mobile',
             'password' => 'required | min:6',
         ]);
 
         $user = User::create([
             'mobile' => $request->mobile,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'verify_code' => rand(100000, 1000000 - 1),
         ]);
