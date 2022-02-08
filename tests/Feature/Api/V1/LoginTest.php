@@ -20,7 +20,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function user_can_login()
+    public function user_can_login_email()
     {
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('personal_access_tokens', 0);
@@ -37,6 +37,34 @@ class LoginTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseHas('users', [
             'email' => $this->user->email,
+            'fcm_key' => '::fcm_key::',
+        ]);
+
+        $this->assertDatabaseCount('personal_access_tokens', 1);
+
+        $this->json('get', route('v1.user.current'), [], ['Authorization' => 'Bearer '.$response->json('token')])
+             ->assertOk()
+             ->assertJsonStructure(['id', 'username', 'email', 'mobile', 'email_verified_at', 'mobile_verified_at', 'is_online']);
+    }
+
+    /** @test */
+    public function user_can_login_mobile()
+    {
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('personal_access_tokens', 0);
+
+        $response = $this->json('post', route('v1.login'), [
+            'email' => $this->user->mobile,
+            'password' => 'password',
+            'fcm_key' => '::fcm_key::',
+        ]);
+
+        $response->assertOk()
+                 ->assertJsonStructure(['token']);
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseHas('users', [
+            'mobile' => $this->user->mobile,
             'fcm_key' => '::fcm_key::',
         ]);
 

@@ -69,7 +69,7 @@ class CustomerTest extends TestCase
     }
 
     /** @test */
-    public function customer_can_login()
+    public function customer_can_login_with_mobile()
     {
         $user = User::factory(['mobile' => '0912345678'])->create();
         Customer::factory(['user_id' => $user->id])->create();
@@ -85,6 +85,27 @@ class CustomerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'mobile' => $user->mobile,
+            'fcm_key' => '::fcm_key::',
+        ]);
+    }
+
+    /** @test */
+    public function customer_can_login_with_email()
+    {
+        $user = User::factory(['mobile' => '0912345678'])->create();
+        Customer::factory(['user_id' => $user->id])->create();
+
+        $response = $this->json('post', route('v1.customers.login'), [
+            'mobile' => $user->email,
+            'password' => 'password',
+            'fcm_key' => '::fcm_key::',
+        ]);
+
+        $response->assertOk()
+            ->assertJsonStructure(['token']);
+
+        $this->assertDatabaseHas('users', [
+            'email' => $user->email,
             'fcm_key' => '::fcm_key::',
         ]);
     }

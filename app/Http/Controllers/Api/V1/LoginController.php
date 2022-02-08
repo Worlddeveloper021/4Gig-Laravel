@@ -12,13 +12,13 @@ class LoginController extends Controller
     public function __invoke(Request $request)
     {
         $validated_data = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required|min:6',
             'device_name' => 'nullable',
             'fcm_key' => 'nullable',
         ]);
 
-        $user = User::whereEmail($validated_data['email'])->first();
+        $user = User::whereEmail($validated_data['email'])->orWhere('mobile', $validated_data['email'])->first();
 
         $this->check_user_exists($user);
 

@@ -99,7 +99,7 @@ class CustomerController extends Controller
             'fcm_key' => 'nullable',
         ]);
 
-        $user = User::where('mobile', $request->mobile)->first();
+        $user = User::where('mobile', $request->mobile)->orWhere('email', $request->mobile)->first();
 
         if (! $user) {
             return $this->validationError('mobile', 'Mobile or Password is Incorrect');
