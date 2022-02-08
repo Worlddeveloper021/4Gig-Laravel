@@ -47,4 +47,8 @@ return [
     'firebase' => [
         'server_key' => 'AAAAbs9D9dU:APA91bFsQX46kI05jDRxxAmTzDtE_LjaNAKz5yP0EIg2P8o-onLOnCgGXh1BVGmht56RSaJWM9HPG0v69Ge5qjFeid08bRiF5cp9qreM3tQZjOnUEuTPoi8Tk1UINT90i0PxrucI3XEQ',
     ],
+    'agora' => [
+        'app_id' => 'b7a24677b9e84f03aa6c0175c1651a2d',
+        'app_certificate' => '1779875a496a406fa14f9aa36dd35505',
+    ],
 ];
