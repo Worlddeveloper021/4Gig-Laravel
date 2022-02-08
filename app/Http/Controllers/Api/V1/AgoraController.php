@@ -12,15 +12,17 @@ class AgoraController extends Controller
     public function create(Request $request)
     {
         $access_token = RtcTokenBuilder::buildTokenWithUid(
-            config('services.agora.app_id'),
+            $app_id = config('services.agora.app_id'),
             config('services.agora.app_certificate'),
-            Str::random(),
+            $channel_name = Str::random(),
             0,
             RtcTokenBuilder::RolePublisher,
             time() + 3600,
         );
 
         return response()->json([
+            'app_id' => $app_id,
+            'channel_name' => $channel_name,
             'access_token' => $access_token,
         ]);
     }
