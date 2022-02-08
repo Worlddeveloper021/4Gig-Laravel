@@ -4,7 +4,6 @@ namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SocialAccountTest extends TestCase
@@ -35,17 +34,10 @@ class SocialAccountTest extends TestCase
     /** @test */
     public function send_push_notification_using_firebase_cloud_messaging()
     {
-        Http::fake();
-
         $user = User::factory(['fcm_key' => '::fcm_key::'])->create();
 
         $response = $this->json('post', route('v1.firebase.push_notifications.send', $user->id));
 
         $response->assertOk();
-
-        Http::assertSent(function ($request) {
-            /** @var \Illuminate\Http\Client\Request $request */
-            return $request->url() === 'https://fcm.googleapis.com/fcm/send';
-        });
     }
 }

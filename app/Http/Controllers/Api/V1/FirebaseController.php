@@ -31,7 +31,11 @@ class FirebaseController extends Controller
             ->post('https://fcm.googleapis.com/fcm/send', $data);
 
         if ($response->status() !== 200) {
-            return response()->json(['message' => 'Failed to send push notification'.PHP_EOL.$response->body()], $response->status());
+            return response()->json(['message' => 'Failed to send push notification', 'body' => $response->json()], $response->status());
+        }
+
+        if ($response->json()['failure'] > 0) {
+            return response()->json(['message' => 'Failed to send push notification', 'body' => $response->json()], $response->status());
         }
 
         return response()->json(['message' => 'Push notification sent successfully'], 200);
