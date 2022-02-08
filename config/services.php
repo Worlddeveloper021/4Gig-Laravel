@@ -44,4 +44,7 @@ return [
         'client_secret' => 'yGBz1bol37TidjJX',
         'redirect' => env('LINKEDIN_REDIRECT_URI'),
     ],
+    'firebase' => [
+        'server_key' => 'AAAAbs9D9dU:APA91bFsQX46kI05jDRxxAmTzDtE_LjaNAKz5yP0EIg2P8o-onLOnCgGXh1BVGmht56RSaJWM9HPG0v69Ge5qjFeid08bRiF5cp9qreM3tQZjOnUEuTPoi8Tk1UINT90i0PxrucI3XEQ',
+    ],
 ];

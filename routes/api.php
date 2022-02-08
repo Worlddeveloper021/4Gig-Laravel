@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\PackageController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\FirebaseController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\OnlineUserController;
 use App\Http\Controllers\Api\V1\AccessTokenController;
@@ -61,6 +62,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('users/online', [OnlineUserController::class, 'index'])->name('users.online');
 
     Route::post('social-accounts/{provider}', [SocialAccountController::class, 'store'])->name('social-accounts.store');
+
+    Route::post('firebase/push_notifications/{user}/send', [FirebaseController::class, 'send'])->name('firebase.push_notifications.send');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
