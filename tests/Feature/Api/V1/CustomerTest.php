@@ -24,6 +24,7 @@ class CustomerTest extends TestCase
             'email' => 'test@test.com',
             'mobile' => '0123456789',
             'password' => 'password',
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $response->assertOk();
@@ -31,6 +32,7 @@ class CustomerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'mobile' => '0123456789',
             'email' => 'test@test.com',
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $user = User::first();

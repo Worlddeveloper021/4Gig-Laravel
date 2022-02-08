@@ -20,6 +20,7 @@ class RegisterTest extends TestCase
             'email' => 'test@test.com',
             'password' => 'secret',
             'password_confirmation' => 'secret',
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $response->assertSessionDoesntHaveErrors()
@@ -34,6 +35,7 @@ class RegisterTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'test@test.com',
             'email_verified_at' => null,
+            'fcm_key' => '::fcm_key::',
         ]);
 
         $this->assertNotNull(User::first()->verify_code);

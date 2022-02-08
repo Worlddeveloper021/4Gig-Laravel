@@ -17,6 +17,7 @@ class CustomerController extends Controller
             'email' => 'nullable|email|unique:users',
             'mobile' => 'required|unique:users,mobile',
             'password' => 'required | min:6',
+            'fcm_key' => 'nullable',
         ]);
 
         $user = User::create([
@@ -24,6 +25,7 @@ class CustomerController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'verify_code' => rand(100000, 1000000 - 1),
+            'fcm_key' => $request->fcm_key,
         ]);
 
         $user->customer()->create(

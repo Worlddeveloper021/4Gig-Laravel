@@ -14,11 +14,13 @@ class RegistgerController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
             'device_name' => 'nullable',
+            'fcm_key' => 'nullable',
         ]);
 
         $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'fcm_key' => $request->fcm_key,
         ]);
 
         $user->sendEmailVerificationNotification();
