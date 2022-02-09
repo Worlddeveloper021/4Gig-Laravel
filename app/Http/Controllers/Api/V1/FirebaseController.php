@@ -38,6 +38,6 @@ class FirebaseController extends Controller
             return response()->json(['message' => 'Failed to send push notification', 'body' => $response->json()], $response->status());
         }
 
-        return response()->json(['message' => 'Push notification sent successfully'], 200);
+        return response()->json(['message' => 'Push notification sent successfully', 'body' => $response->json()], 200);
     }
 }
