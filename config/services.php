@@ -45,7 +45,8 @@ return [
         'redirect' => env('LINKEDIN_REDIRECT_URI'),
     ],
     'firebase' => [
-        'server_key' => 'AAAAbs9D9dU:APA91bFsQX46kI05jDRxxAmTzDtE_LjaNAKz5yP0EIg2P8o-onLOnCgGXh1BVGmht56RSaJWM9HPG0v69Ge5qjFeid08bRiF5cp9qreM3tQZjOnUEuTPoi8Tk1UINT90i0PxrucI3XEQ',
+        'server_key' => 'AAAAHTY4pwI:APA91bGM_F_Riih0vW_4iDGX-QAtflaA55floFxZwCxtAieC80RvbV9wxHGTi_HzpfJsbamV3mmCRDmwN1okfYefCdyItcZI0apJSaTAJH96edBrnp-A1nmrBWs3_Oy_dtdKoNLkSw0B',
+        // 'server_key' => 'AAAAbs9D9dU:APA91bFsQX46kI05jDRxxAmTzDtE_LjaNAKz5yP0EIg2P8o-onLOnCgGXh1BVGmht56RSaJWM9HPG0v69Ge5qjFeid08bRiF5cp9qreM3tQZjOnUEuTPoi8Tk1UINT90i0PxrucI3XEQ',
     ],
     'agora' => [
         'app_id' => 'b7a24677b9e84f03aa6c0175c1651a2d',
