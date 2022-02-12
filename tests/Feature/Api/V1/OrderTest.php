@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Customer;
+use App\Models\Order;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,7 +19,7 @@ class OrderTest extends TestCase
     public function customer_can_create_an_order()
     {
         $profile = Profile::factory()
-            ->for(User::factory(['fcm_key' => '::fcm_key::']))
+            ->for(User::factory(['fcm_key' => 'ew_6ScGCQAuGBpZQjbIXRb:APA91bH_WzA3vIzFrMtvCjdZND2zgdgwiv1JULQqMVG209PE4ehGIkFPOxtkGDXUYfFfzcMytd0aVMCyVAZ-lKK642oWYJZgw9s2XK0NrXAKAhV_3DSxlqsZVRkBNHkoviyqsqcxa5Tg']))
             ->has(Package::factory())->create();
         $customer = Customer::factory()->create();
 
@@ -27,6 +28,7 @@ class OrderTest extends TestCase
         $response = $this->json('post', route('v1.orders.store', $profile), [
             'package_id' => $profile->packages->first()->id,
             'payment_id' => 1,
+            'call_type' => Order::CALL_TYPE_VIDEO, // 0 => video and 1 => voice
         ]);
 
         $response->assertOk();
@@ -38,6 +40,7 @@ class OrderTest extends TestCase
             'duration' => $profile->packages->first()->duration,
             'price' => $profile->packages->first()->price,
             'payment_id' => 1,
+            'call_type' => 0,
         ]);
     }
 

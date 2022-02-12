@@ -25,6 +25,9 @@ class OrderResource extends JsonResource
             'price' => $this->price,
             'status' => $this->status_name,
             'channel_name' => $this->channel_name,
+            'access_token' => $this->access_token,
+            'call_type' => $this->call_type_name,
+            'agora_app_id' => config('services.agora.app_id'),
         ];
     }
 }

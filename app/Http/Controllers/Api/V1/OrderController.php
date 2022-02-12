@@ -6,6 +6,8 @@ use Str;
 use App\Models\Order;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use App\Agora\RtcTokenBuilder;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use App\Http\Resources\Api\V1\OrderResource;
@@ -18,6 +20,7 @@ class OrderController extends Controller
         $validated_data = $request->validate([
             'package_id' => 'required|exists:packages,id',
             'payment_id' => 'required',
+            'call_type' => [ 'required', Rule::in(Order::CALL_TYPES)],
         ]);
 
         $package = $profile->packages()->find($validated_data['package_id']);
@@ -38,6 +41,7 @@ class OrderController extends Controller
             'price' => $package->price,
             'payment_id' => $validated_data['payment_id'],
             'status' => Order::STATUS_PENDING,
+            'call_type' => $validated_data['call_type'],
         ]);
 
         // TODO: check payment status
@@ -46,7 +50,12 @@ class OrderController extends Controller
         if (true) { // this is for check payment status in later
             $channel_name = $this->create_channel_name();
 
-            $order->update(['channel_name' => $channel_name]);
+            $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
+
+            $order->update([
+                'channel_name' => $channel_name,
+                'access_token' => $access_token,
+            ]);
 
             $this->send_firebase_push_notification($order);
         }
@@ -73,15 +82,22 @@ class OrderController extends Controller
         }
 
         $firebaseToken = [$target_user->fcm_key];
-        $body = json_encode(['order_id' => $order->id]);
 
         $data = [
             'registration_ids' => $firebaseToken,
             'notification' => [
-                'title' => 'This is Order Notification',
-                'body' => $body,
+                'title' => "You Have {$order->call_type_name} Call",
+                'body' => "You have a new call from {$order->customer->last_name}",
                 'content_available' => true,
                 'priority' => 'high',
+            ],
+            'data' => [
+                'order_id' => $order->id,
+                'call_type' => $order->call_type_name,
+                'access_token' => $order->access_token,
+                'channel_name' => $order->channel_name,
+                'full_name' => "{$order->customer->first_name} {$order->customer->last_name}",
+                'agora_app_id' => config('services.agora.app_id'),
             ],
         ];
 
@@ -96,5 +112,17 @@ class OrderController extends Controller
         }
 
         return true;
+    }
+
+    private function create_access_token($channel_name, $duration)
+    {
+        return RtcTokenBuilder::buildTokenWithUid(
+            config('services.agora.app_id'),
+            config('services.agora.app_certificate'),
+            $channel_name,
+            0,
+            RtcTokenBuilder::RolePublisher,
+            time() + $duration,
+        );        
     }
 }

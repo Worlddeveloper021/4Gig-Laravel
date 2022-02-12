@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->string('price');
             $table->tinyInteger('status');
             $table->string('channel_name')->nullable();
+            $table->string('access_token')->nullable();
+            $table->tinyInteger('call_type');
             $table->timestamps();
         });
     }

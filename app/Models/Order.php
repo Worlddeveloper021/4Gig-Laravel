@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Agora\RtcTokenBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,6 +20,8 @@ class Order extends Model
         'price',
         'status',
         'channel_name',
+        'access_token',
+        'call_type',
     ];
 
     const STATUS_PENDING = 0;
@@ -39,6 +42,19 @@ class Order extends Model
         self::STATUS_CANCELED => 'Canceled',
     ];
 
+    const CALL_TYPE_VIDEO = 0;
+    const CALL_TYPE_VOICE = 1;
+
+    const CALL_TYPES = [
+        self::CALL_TYPE_VIDEO,
+        self::CALL_TYPE_VOICE,
+    ];
+
+    const CALL_TYPE_NAMES = [
+        self::CALL_TYPE_VIDEO => 'Video',
+        self::CALL_TYPE_VOICE => 'Voice',
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -57,5 +73,10 @@ class Order extends Model
     public function getStatusNameAttribute()
     {
         return self::STATUS_NAMES[$this->status];
+    }
+
+    public function getCallTypeNameAttribute()
+    {
+        return self::CALL_TYPE_NAMES[$this->call_type];
     }
 }
