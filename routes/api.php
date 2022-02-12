@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Controllers\Api\V1\AgoraController;
 use App\Http\Controllers\Api\V1\LoginController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\VerifyController;
 use App\Http\Controllers\Api\V1\PackageController;
@@ -81,5 +82,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
         Route::get('call/access-token/video', [AccessTokenController::class, 'video'])->name('call.access-token.video');
 
         Route::post('agora/access_token/create', [AgoraController::class, 'create'])->name('agora.access_token.create');
+
+        Route::post('orders/{profile}', [OrderController::class, 'store'])->name('orders.store');
     });
 });
