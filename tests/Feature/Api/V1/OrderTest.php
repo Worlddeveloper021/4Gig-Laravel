@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Customer;
@@ -16,7 +17,9 @@ class OrderTest extends TestCase
     /** @test */
     public function customer_can_create_an_order()
     {
-        $profile = Profile::factory()->has(Package::factory())->create();
+        $profile = Profile::factory()
+            ->for(User::factory(['fcm_key' => '::fcm_key::']))
+            ->has(Package::factory())->create();
         $customer = Customer::factory()->create();
 
         Sanctum::actingAs($customer->user);
