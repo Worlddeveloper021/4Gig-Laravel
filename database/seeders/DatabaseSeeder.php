@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory([
             'email' => 'test@test.com',
             'verify_code' => '123456',
+            'fcm_key' => 'ew_6ScGCQAuGBpZQjbIXRb:APA91bH_WzA3vIzFrMtvCjdZND2zgdgwiv1JULQqMVG209PE4ehGIkFPOxtkGDXUYfFfzcMytd0aVMCyVAZ-lKK642oWYJZgw9s2XK0NrXAKAhV_3DSxlqsZVRkBNHkoviyqsqcxa5Tg',
         ])->create();
 
         $user->createToken('test-token');
@@ -83,5 +84,11 @@ class DatabaseSeeder extends Seeder
             'category_id' => $categories[$sequence->index % 6]->id,
             'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
         ])->create();
+
+
+        User::find(9)->update([
+            'email' => 'customer@test.com',
+            'fcm_key' => 'euTx0FAbRYq9qhQ1XcIYvX:APA91bGwau_KOvueoFf4aTTqutyE4guozDd5Zu0UZOTmSVWXLW3harlPrTxr3EOsvU5KoMbfoaVRkcwIjLSmNDyNtjcKy5C1j7G0KEhlTllEu2b5SHyyBPzoeXKWKzDhWR4ml1Vu1N3L'
+        ]);
     }
 }
