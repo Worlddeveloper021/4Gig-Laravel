@@ -67,6 +67,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::post('firebase/push_notifications/{user}/send', [FirebaseController::class, 'send'])->name('firebase.push_notifications.send');
 
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');

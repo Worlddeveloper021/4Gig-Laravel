@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Agora\RtcTokenBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -43,6 +42,7 @@ class Order extends Model
     ];
 
     const CALL_TYPE_VIDEO = 0;
+
     const CALL_TYPE_VOICE = 1;
 
     const CALL_TYPES = [

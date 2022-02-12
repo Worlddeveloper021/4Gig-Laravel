@@ -15,12 +15,17 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class OrderController extends Controller
 {
+    public function show(Order $order)
+    {
+        return response()->json(OrderResource::make($order));
+    }
+
     public function store(Request $request, Profile $profile)
     {
         $validated_data = $request->validate([
             'package_id' => 'required|exists:packages,id',
             'payment_id' => 'required',
-            'call_type' => [ 'required', Rule::in(Order::CALL_TYPES)],
+            'call_type' => ['required', Rule::in(Order::CALL_TYPES)],
         ]);
 
         $package = $profile->packages()->find($validated_data['package_id']);
@@ -123,6 +128,6 @@ class OrderController extends Controller
             0,
             RtcTokenBuilder::RolePublisher,
             time() + $duration,
-        );        
+        );
     }
 }

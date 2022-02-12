@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Customer;
@@ -16,8 +17,8 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        $profile = Profile::factory()->for(Package::factory())->create();
-        $package = $profile->packges->first();
+        $profile = Profile::factory()->has(Package::factory())->create();
+        $package = $profile->packages->first();
 
         return [
             'profile_id' => $profile->id,
@@ -25,10 +26,12 @@ class OrderFactory extends Factory
             'package_id' => $package->id,
             'duration' => $package->duration,
             'price' => $package->price,
-            'status' => $this->faker->numberBetween(0, 2),
+            'status' => $this->faker->randomElement(Order::STATUSES),
             'payment_status' => $this->faker->randomElement(['pending', 'done', 'canceled']),
             'payment_id' => $this->faker->uuid,
             'channel_name' => $this->faker->unique()->word,
+            'call_type' => $this->faker->randomElement(Order::CALL_TYPES),
+            'access_token' => $this->faker->uuid,
         ];
     }
 }

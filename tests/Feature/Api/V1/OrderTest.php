@@ -4,10 +4,10 @@ namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Customer;
-use App\Models\Order;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -28,7 +28,7 @@ class OrderTest extends TestCase
         $response = $this->json('post', route('v1.orders.store', $profile), [
             'package_id' => $profile->packages->first()->id,
             'payment_id' => 1,
-            'call_type' => Order::CALL_TYPE_VIDEO, // 0 => video and 1 => voice
+            'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
         $response->assertOk();
@@ -55,6 +55,7 @@ class OrderTest extends TestCase
         $response = $this->json('post', route('v1.orders.store', $profile), [
             'package_id' => $profile->packages->first()->id + 1,
             'payment_id' => 1,
+            'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
         $response->assertJsonValidationErrorFor('package_id');
@@ -80,6 +81,7 @@ class OrderTest extends TestCase
         $response = $this->json('post', route('v1.orders.store', $profile->id + 2), [
             'package_id' => 1,
             'payment_id' => 1,
+            'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
         $response->assertNotFound();
@@ -104,6 +106,7 @@ class OrderTest extends TestCase
         $response = $this->json('post', route('v1.orders.store', $profile), [
             'package_id' => 1,
             'payment_id' => 1,
+            'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
         $response->assertJsonValidationErrors(['user']);
@@ -116,5 +119,15 @@ class OrderTest extends TestCase
             'price' => $profile->packages->first()->price,
             'payment_id' => 1,
         ]);
+    }
+
+    /** @test */
+    public function get_order_data_for_given_id()
+    {
+        $order = Order::factory()->create();
+
+        $response = $this->json('get', route('v1.orders.show', $order->id));
+
+        $response->assertOk();
     }
 }
