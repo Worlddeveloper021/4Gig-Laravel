@@ -17,7 +17,7 @@ class CustomerFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory(),
         ];
     }
 }

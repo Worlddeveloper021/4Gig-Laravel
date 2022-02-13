@@ -80,11 +80,13 @@ class DatabaseSeeder extends Seeder
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->has(Review::factory()->count(5), 'reviews')
             ->count(20)
-            ->sequence(fn ($sequence) => [
-                'user_id' => User::factory()->create()->id,
-                'category_id' => $categories[$sequence->index % 6]->id,
-                'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
-            ])->create();
+            ->sequence(function ($sequence) use ($categories) {
+                return [
+                    'user_id' => User::factory()->create()->id,
+                    'category_id' => $categories[$sequence->index % 6]->id,
+                    'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
+                ];
+            })->create();
 
         User::find(9)->update([
             'email' => 'customer@test.com',

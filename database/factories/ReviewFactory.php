@@ -16,8 +16,8 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            'profile_id' => Profile::factory()->forUser()->create()->id,
-            'customer_id' => Customer::factory()->forUser()->create()->id,
+            'profile_id' => Profile::factory()->forUser(),
+            'customer_id' => Customer::factory()->forUser(),
             'review' => $this->faker->text(),
             'rate' => $this->faker->numberBetween(1, 5),
         ];

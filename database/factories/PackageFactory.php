@@ -16,7 +16,7 @@ class PackageFactory extends Factory
     public function definition()
     {
         return [
-            'profile_id' => Profile::factory()->create()->id,
+            'profile_id' => Profile::factory(),
             'price' => $this->faker->randomFloat(2, 0, 100),
             'duration' => $this->faker->randomElement([30, 60]),
             'description' => $this->faker->sentence(),

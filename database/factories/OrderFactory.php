@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Profile;
+use App\Models\Category;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,15 +18,25 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        $profile = Profile::factory()->has(Package::factory())->create();
-        $package = $profile->packages->first();
-
         return [
-            'profile_id' => $profile->id,
-            'customer_id' => Customer::factory()->create()->id,
-            'package_id' => $package->id,
-            'duration' => $package->duration,
-            'price' => $package->price,
+            'profile_id' => Profile::factory([
+                'category_id' => function () {
+                    return Category::first()->id;
+                },
+                'sub_category_id' => function () {
+                    return Category::first()->children->first()->id;
+                },
+            ]),
+            'customer_id' => Customer::factory(),
+            'package_id' => function (array $attributes) {
+                return Package::factory(['profile_id' => $attributes['profile_id']]);
+            },
+            'duration' => function (array $attributes) {
+                return Package::find($attributes['package_id'])->duration;
+            },
+            'price' => function (array $attributes) {
+                return Package::find($attributes['package_id'])->price;
+            },
             'status' => $this->faker->randomElement(Order::STATUSES),
             'payment_status' => $this->faker->randomElement(['pending', 'done', 'canceled']),
             'payment_id' => $this->faker->uuid,

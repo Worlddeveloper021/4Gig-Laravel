@@ -24,7 +24,7 @@ class CategoryFactory extends Factory
     public function parent($id = null)
     {
         return $this->state([
-            'parent_id' => $id ?? Category::factory()->create()->id,
+            'parent_id' => $id ?? Category::factory(),
         ]);
     }
 }

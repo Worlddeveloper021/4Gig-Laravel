@@ -19,14 +19,14 @@ class CardFactory extends Factory
             'card_number' => $this->faker->creditCardNumber(),
             'expiry_date' => $this->faker->date(),
             'cvc' => $this->faker->numberBetween(100, 999),
-            'customer_id' => Customer::factory()->create()->id,
+            'customer_id' => Customer::factory(),
         ];
     }
 
     public function customer($id = null)
     {
         return $this->state([
-            'customer_id' => $id ?? Customer::factory()->create()->id,
+            'customer_id' => $id ?? Customer::factory(),
         ]);
     }
 }
