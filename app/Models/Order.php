@@ -41,6 +41,18 @@ class Order extends Model
         self::STATUS_CANCELED => 'Canceled',
     ];
 
+    const PAYMENT_STATUS_CREATED = 'created';
+
+    const PAYMENT_STATUS_APPROVED = 'approved';
+
+    const PAYMENT_STATUS_FAILED = 'failed';
+
+    const PAYMENT_STATUSES = [
+        self::PAYMENT_STATUS_CREATED,
+        self::PAYMENT_STATUS_APPROVED,
+        self::PAYMENT_STATUS_FAILED,
+    ];
+
     const CALL_TYPE_VIDEO = 0;
 
     const CALL_TYPE_VOICE = 1;

@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "protoqol/prequel": "^1.22",
         "spatie/laravel-medialibrary": "9.0.0",
+        "srmklive/paypal": "~3.0",
         "tailflow/laravel-orion": "^2.9"
     },
     "require-dev": {

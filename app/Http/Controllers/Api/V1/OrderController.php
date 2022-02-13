@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use DB;
 use Str;
 use App\Models\Order;
+use App\Paypal\PayPal;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Agora\RtcTokenBuilder;
@@ -38,34 +40,42 @@ class OrderController extends Controller
             return $this->validationError('user', 'The logged in user is not a customer.');
         }
 
-        $order = Order::create([
-            'customer_id' => $customer->id,
-            'profile_id' => $profile->id,
-            'package_id' => $package->id,
-            'duration' => $package->duration,
-            'price' => $package->price,
-            'payment_id' => $validated_data['payment_id'],
-            'status' => Order::STATUS_PENDING,
-            'call_type' => $validated_data['call_type'],
-        ]);
+        try {
+            DB::beginTransaction();
 
-        // TODO: check payment status
-
-        //TODO: if payment status is done, change order to create channel name
-        if (true) { // this is for check payment status in later
-            $channel_name = $this->create_channel_name();
-
-            $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
-
-            $order->update([
-                'channel_name' => $channel_name,
-                'access_token' => $access_token,
+            $order = Order::create([
+                'customer_id' => $customer->id,
+                'profile_id' => $profile->id,
+                'package_id' => $package->id,
+                'duration' => $package->duration,
+                'price' => $package->price,
+                'payment_id' => $validated_data['payment_id'],
+                'status' => Order::STATUS_PENDING,
+                'call_type' => $validated_data['call_type'],
             ]);
 
-            $this->send_firebase_push_notification($order);
-        }
+            $payment_status = $this->get_payment_status($order->payment_id);
+            $order->update(['payment_status' => $payment_status]);
 
-        return response()->json(new OrderResource($order), 200);
+            if ($payment_status === Order::PAYMENT_STATUS_APPROVED) {
+                $channel_name = $this->create_channel_name();
+
+                $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
+
+                $order->update([
+                    'channel_name' => $channel_name,
+                    'access_token' => $access_token,
+                ]);
+
+                $this->send_firebase_push_notification($order);
+            }
+            DB::commit();
+
+            return response()->json(new OrderResource($order), 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     private function create_channel_name()
@@ -129,5 +139,15 @@ class OrderController extends Controller
             RtcTokenBuilder::RolePublisher,
             time() + $duration,
         );
+    }
+
+    private function get_payment_status($payment_id)
+    {
+        $paypal = new PayPal;
+        $paypal->getAccessToken();
+
+        $response = $paypal->getPaymentDetails($payment_id);
+
+        return $response['state'];
     }
 }
