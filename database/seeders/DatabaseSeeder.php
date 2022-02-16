@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
                 ];
             })->create();
 
-        User::find(9)->update([
+        User::find(2)->update([
             'email' => 'customer@test.com',
             'fcm_key' => 'euTx0FAbRYq9qhQ1XcIYvX:APA91bGwau_KOvueoFf4aTTqutyE4guozDd5Zu0UZOTmSVWXLW3harlPrTxr3EOsvU5KoMbfoaVRkcwIjLSmNDyNtjcKy5C1j7G0KEhlTllEu2b5SHyyBPzoeXKWKzDhWR4ml1Vu1N3L',
         ]);

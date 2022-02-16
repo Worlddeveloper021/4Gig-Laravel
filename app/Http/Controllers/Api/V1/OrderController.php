@@ -40,6 +40,10 @@ class OrderController extends Controller
             return $this->validationError('user', 'The logged in user is not a customer.');
         }
 
+        if ($profile->user->fcm_key == $customer->user->fcm_key) {
+            return $this->validationError('customer', 'You can not order for yourself.');
+        }
+
         try {
             DB::beginTransaction();
 
@@ -60,7 +64,8 @@ class OrderController extends Controller
             if ($payment_status === Order::PAYMENT_STATUS_APPROVED) {
                 $channel_name = $this->create_channel_name();
 
-                $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
+                $access_token = $this->create_access_token($channel_name, 86400); // TODO: one day in seconds for testing
+                // $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
 
                 $order->update([
                     'channel_name' => $channel_name,
