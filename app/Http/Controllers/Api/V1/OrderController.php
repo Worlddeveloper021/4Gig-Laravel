@@ -62,7 +62,8 @@ class OrderController extends Controller
             $order->update(['payment_status' => $payment_status]);
 
             if ($payment_status === Order::PAYMENT_STATUS_APPROVED) {
-                $channel_name = $this->create_channel_name();
+                $channel_name = "order_channel_{$order->id}";
+                // $channel_name = $this->create_channel_name();
 
                 $access_token = $this->create_access_token($channel_name, 86400); // TODO: one day in seconds for testing
                 // $access_token = $this->create_access_token($channel_name, $order->duration * 60); // duration in seconds
