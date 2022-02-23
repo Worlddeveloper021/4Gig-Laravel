@@ -24,6 +24,7 @@ class CreateProfilesTable extends Migration
             $table->unsignedTinyInteger('availability_on_demand')->index();
             $table->unsignedInteger('per_hour')->index();
             $table->text('description')->nullable();
+            $table->tinyInteger('is_active')->index();
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->foreignId('sub_category_id')->nullable()->constrained('categories');
             $table->timestamps();

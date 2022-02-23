@@ -29,6 +29,7 @@ class ProfileRequest extends FormRequest
             'description' => 'nullable',
             'category_id' => 'required | exists:categories,id',
             'sub_category_id' => 'required | exists:categories,id',
+            'is_active' => 'nullable',
         ];
     }
 }

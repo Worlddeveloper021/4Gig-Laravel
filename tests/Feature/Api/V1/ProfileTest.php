@@ -48,6 +48,7 @@ class ProfileTest extends TestCase
             'skills' => $skills,
             'spoken_languages' => $spoken_languages,
             'username' => $username,
+            'is_active' => 1,
         ]);
 
         $resoponse = $this->json('post', route('v1.profile.store'), $request_data);
@@ -55,7 +56,10 @@ class ProfileTest extends TestCase
             ->assertJsonStructure($this->expected_structure());
 
         $this->assertDatabaseCount('profiles', 1);
-        $this->assertDatabaseHas('profiles', array_merge($fake_data, ['user_id' => $this->user->id]));
+        $this->assertDatabaseHas('profiles', array_merge($fake_data, [
+            'user_id' => $this->user->id,
+            'is_active' => 1,
+        ]));
 
         $profile = Profile::first();
 
@@ -272,6 +276,31 @@ class ProfileTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function user_can_update_is_active_by_profile_id()
+    {
+        $profile = Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
+            ->create(['user_id' => $this->user->id]);
+
+        Sanctum::actingAs($this->user);
+
+        $resoponse = $this->json('put', route('v1.profile.update.is_active', $profile->id), [
+            'is_active' => 0,
+        ]);
+
+        $this->assertDatabaseHas('profiles', [
+            'id' => $profile->id,
+            'is_active' => 0,
+        ]);
+
+        $resoponse->assertOk()
+            ->assertJsonStructure($this->expected_structure(true));
+    }
+
     protected function expected_structure($has_category = false)
     {
         $categories = (! $has_category) ? [] : [
@@ -292,6 +321,7 @@ class ProfileTest extends TestCase
             'birth_date',
             'gender',
             'availability_on_demand',
+            'is_active',
             'per_hour',
             'avatar',
             'user' => [

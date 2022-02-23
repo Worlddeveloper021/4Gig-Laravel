@@ -74,6 +74,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');
         Route::match(['post', 'put'], 'profile', [ProfileController::class, 'store'])->name('profile.store');
         Route::put('profile/step-2', [ProfileController::class, 'store_step_2'])->name('profile.store.step_2');
+        Route::put('profile/is-active', [ProfileController::class, 'update_is_active'])->name('profile.update.is_active');
 
         Route::post('profile/packages', [PackageController::class, 'store'])->name('profile.package.store');
 

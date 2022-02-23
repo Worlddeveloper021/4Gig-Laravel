@@ -25,10 +25,12 @@ class Profile extends Model implements HasMedia
         'description',
         'video_presentation',
         'portfolio',
+        'is_active',
     ];
 
     protected $casts = [
         'availability_on_demand' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     const PRESENTATION_COLLECTION_NAME = 'presentation';

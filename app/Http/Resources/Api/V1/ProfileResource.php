@@ -24,6 +24,7 @@ class ProfileResource extends JsonResource
             'birth_date' => $this->birth_date,
             'gender' => $this->gender_name,
             'availability_on_demand' => $this->availability_on_demand,
+            'is_active' => $this->is_active,
             'per_hour' => $this->per_hour,
             'avatar' => $this->user->getFirstMediaUrl(User::AVATAR_COLLECTION_NAME),
             'user' => UserResource::make($this->user),

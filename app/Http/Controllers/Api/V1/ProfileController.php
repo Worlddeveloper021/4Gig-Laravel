@@ -101,4 +101,21 @@ class ProfileController extends Controller
 
         return response()->json(['message' => 'success']);
     }
+
+    public function update_is_active(Request $request)
+    {
+        $request->validate([
+            'is_active' => 'required | boolean',
+        ]);
+
+        $profile = auth()->user()->profile;
+
+        if (! $profile) {
+            return $this->validationError('error', 'Profile not found.');
+        }
+
+        $profile->update(['is_active' => $request->is_active]);
+
+        return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
+    }
 }
