@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Package;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,6 +34,14 @@ class PackageController extends Controller
 
         return response()->json([
             'message' => 'Package created successfully',
+        ]);
+    }
+
+    public function min_max_price()
+    {
+        return response()->json([
+            'min_price' => Package::min('price'),
+            'max_price' => Package::max('price'),
         ]);
     }
 }

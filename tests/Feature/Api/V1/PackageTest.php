@@ -28,7 +28,7 @@ class PackageTest extends TestCase
             'on_demand' => 'available',
         ]);
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $this->assertDatabaseHas('packages', [
             'profile_id' => $profile->id,
@@ -88,7 +88,6 @@ class PackageTest extends TestCase
     }
 
     /** @test */
-    // show packages of a profile
     public function it_can_show_packages_of_a_profile()
     {
         $user = User::factory()->create();
@@ -99,7 +98,7 @@ class PackageTest extends TestCase
 
         $response = $this->json('get', route('v1.profile.package.show', $profile->id));
 
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response->assertJsonStructure([
             '*' => [
@@ -109,6 +108,20 @@ class PackageTest extends TestCase
                 'description',
                 'on_demand',
             ],
+        ]);
+    }
+
+    /** @test */
+    public function calculate_min_and_max_price_of_packges()
+    {
+        Package::factory()->count(20)->create();
+
+        $response = $this->json('get', route('v1.package.min_max_price'));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'min_price',
+            'max_price',
         ]);
     }
 }

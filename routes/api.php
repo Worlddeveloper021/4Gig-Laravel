@@ -69,6 +69,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
+    Route::get('packages/min-max-price', [PackageController::class, 'min_max_price'])->name('package.min_max_price');
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('profile/upload/file', [ProfileController::class, 'upload_file'])->name('profile.upload_file');
