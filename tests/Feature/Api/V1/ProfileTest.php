@@ -301,6 +301,32 @@ class ProfileTest extends TestCase
             ->assertJsonStructure($this->expected_structure(true));
     }
 
+    /** @test */
+    public function calculate_min_and_max_price_of_per_hours()
+    {
+        $category = Category::factory()
+            ->has(Category::factory(), 'children')
+            ->create();
+
+        Profile::factory()
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->for(User::factory())
+            ->count(10)
+            ->create([
+                'category_id' => $category->id,
+                'sub_category_id' => $category->children->first()->id,
+            ]);
+
+        $response = $this->json('get', route('v1.profile.min_max_price'));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'min_price',
+            'max_price',
+        ]);
+    }
+
     protected function expected_structure($has_category = false)
     {
         $categories = (! $has_category) ? [] : [

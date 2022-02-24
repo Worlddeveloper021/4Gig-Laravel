@@ -118,4 +118,12 @@ class ProfileController extends Controller
 
         return response()->json(new ProfileResource($profile->loadMissing('skills', 'spoken_languages')));
     }
+
+    public function min_max_price()
+    {
+        return response()->json([
+            'min_price' => Profile::min('per_hour'),
+            'max_price' => Profile::max('per_hour'),
+        ]);
+    }
 }

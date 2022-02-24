@@ -110,18 +110,4 @@ class PackageTest extends TestCase
             ],
         ]);
     }
-
-    /** @test */
-    public function calculate_min_and_max_price_of_packges()
-    {
-        Package::factory()->count(20)->create();
-
-        $response = $this->json('get', route('v1.package.min_max_price'));
-
-        $response->assertOk();
-        $response->assertJsonStructure([
-            'min_price',
-            'max_price',
-        ]);
-    }
 }
