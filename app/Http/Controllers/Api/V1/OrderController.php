@@ -84,6 +84,17 @@ class OrderController extends Controller
         }
     }
 
+    public function update_status(Order $order, Request $request)
+    {
+        $validated_data = $request->validate([
+            'status' => ['required', Rule::in(Order::STATUSES)],
+        ]);
+
+        $order->update($validated_data);
+
+        return response()->json(new OrderResource($order), 200);
+    }
+
     private function create_channel_name()
     {
         $channel_name = Str::random();

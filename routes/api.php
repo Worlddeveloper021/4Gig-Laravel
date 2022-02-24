@@ -89,5 +89,6 @@ Route::name('v1.')->prefix('v1')->group(function () {
         Route::post('agora/access_token/create', [AgoraController::class, 'create'])->name('agora.access_token.create');
 
         Route::post('orders/{profile}', [OrderController::class, 'store'])->name('orders.store');
+        Route::put('orders/{order}/status', [OrderController::class, 'update_status'])->name('orders.update.status');
     });
 });

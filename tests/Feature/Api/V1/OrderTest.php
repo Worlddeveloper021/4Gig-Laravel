@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Profile;
+use App\Models\Category;
 use App\Models\Customer;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -124,10 +125,53 @@ class OrderTest extends TestCase
     /** @test */
     public function get_order_data_for_given_id()
     {
+        Category::factory()->parent()->create();
         $order = Order::factory()->create();
 
         $response = $this->json('get', route('v1.orders.show', $order->id));
 
         $response->assertOk();
+        $response->assertJsonStructure($this->expectedJson());
+    }
+
+    /** @test */
+    public function update_order_status_for_given_oreder_id()
+    {
+        Category::factory()->parent()->create();
+        $order = Order::factory()->create();
+        $customer = Customer::factory()->create();
+
+        Sanctum::actingAs($customer->user);
+
+        $response = $this->json('put', route('v1.orders.update.status', $order->id), [
+            'status' => Order::STATUS_DONE,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonStructure($this->expectedJson());
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status' => Order::STATUS_DONE,
+        ]);
+    }
+
+    private function expectedJson()
+    {
+        return [
+            'id',
+            'customer',
+            'profile',
+            'package',
+            'payment_id',
+            'payment_status',
+            'duration',
+            'price',
+            'status',
+            'channel_name',
+            'access_token',
+            'call_type',
+            'agora_app_id',
+        ];
     }
 }
