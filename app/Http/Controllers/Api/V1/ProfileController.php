@@ -145,13 +145,17 @@ class ProfileController extends Controller
             ->withCount('reviews')
             ->paginate();
 
+        $collection = $profiles->getCollection();
+
         if ($number_of_rates = $request->number_of_rates) {
-            $profiles = $profiles->where('reviews_avg_rate', $number_of_rates);
+            $collection = $collection->where('reviews_avg_rate', $number_of_rates);
         }
 
         if ($number_of_reviews = $request->number_of_reviews) {
-            $profiles = $profiles->where('reviews_count', $number_of_reviews);
+            $collection = $collection->where('reviews_count', $number_of_reviews);
         }
+
+        $profiles->setCollection($collection);
 
         return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
     }

@@ -43,7 +43,7 @@ class ProfileFactory extends Factory
             'per_hour' => rand(10, 500),
             'user_id' => User::factory(),
             'description' => $this->faker->paragraph(),
-            'is_active' => rand(0, 1),
+            'is_active' => 1, // rand(0, 1)
             // 'category_id' => $category_id = Category::factory()->create()->id,
             // 'sub_category_id' => Category::factory()->create(['parent_id' => $category_id])->id,
         ];

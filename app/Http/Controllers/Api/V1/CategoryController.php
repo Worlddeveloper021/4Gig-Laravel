@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Profile;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class CategoryController extends Controller
 
     public function profiles_index(Request $request, Category $category)
     {
-        $profiles = $category->profiles()->with('skills', 'spoken_languages')->paginate();
+        $profiles = $category->profiles()->where('is_active', Profile::ACTIVE)->with('skills', 'spoken_languages')->paginate();
 
         return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
     }

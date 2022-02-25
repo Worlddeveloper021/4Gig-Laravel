@@ -37,6 +37,10 @@ class Profile extends Model implements HasMedia
 
     const PORTFOLIO_COLLECTION_NAME = 'portfolio';
 
+    const ACTIVE = 1;
+
+    const INACTIVE = 0;
+
     const FEMALE = 0;
 
     const MALE = 1;

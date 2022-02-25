@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
             ->count(20)
             ->sequence(function ($sequence) use ($categories) {
                 return [
+                    'per_hour' => ($sequence->index + 1) * 5,
                     'user_id' => User::factory()->create()->id,
                     'category_id' => $categories[$sequence->index % 6]->id,
                     'sub_category_id' => $categories[$sequence->index % 6]->children->first()->id,
