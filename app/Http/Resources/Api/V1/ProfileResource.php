@@ -37,6 +37,7 @@ class ProfileResource extends JsonResource
             'portfolio' => $this->getFirstMediaUrl(Profile::PORTFOLIO_COLLECTION_NAME),
             'rate' => number_format(round($this->reviews()->avg('rate'), 1, PHP_ROUND_HALF_DOWN), 1),
             'rate_count' => $this->reviews()->count(),
+            'packages' => PackageResource::collection($this->whenLoaded('packages')),
         ];
     }
 }

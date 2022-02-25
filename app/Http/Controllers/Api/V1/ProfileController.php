@@ -126,4 +126,33 @@ class ProfileController extends Controller
             'max_price' => Profile::max('per_hour'),
         ]);
     }
+
+    public function filter(Request $request)
+    {
+        $request->validate([
+            'min_price' => 'nullable | numeric',
+            'max_price' => 'nullable | numeric',
+            'number_of_rates' => 'nullable | numeric',
+            'number_of_reviews' => 'nullable | numeric',
+        ]);
+
+        $profiles = Profile::with('user', 'skills', 'spoken_languages')->where('is_active', true)
+            ->when($request->min_price, function ($query, $min_price) {
+                $query->where('per_hour', '>=', $min_price);
+            })->when($request->max_price, function ($query, $max_price) {
+                $query->where('per_hour', '<=', $max_price);
+            })->withAvg('reviews', 'rate')
+            ->withCount('reviews')
+            ->paginate();
+
+        if ($number_of_rates = $request->number_of_rates) {
+            $profiles = $profiles->where('reviews_avg_rate', $number_of_rates);
+        }
+
+        if ($number_of_reviews = $request->number_of_reviews) {
+            $profiles = $profiles->where('reviews_count', $number_of_reviews);
+        }
+
+        return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
+    }
 }

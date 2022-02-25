@@ -165,6 +165,6 @@ class OrderController extends Controller
 
         $response = $paypal->getPaymentDetails($payment_id);
 
-        return $response['state'];
+        return $response['state'] ?? Order::PAYMENT_STATUS_CREATED;
     }
 }

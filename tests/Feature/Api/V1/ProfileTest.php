@@ -5,6 +5,8 @@ namespace Tests\Feature\Api\V1;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Skill;
+use App\Models\Review;
+use App\Models\Package;
 use App\Models\Profile;
 use App\Models\Category;
 use Laravel\Sanctum\Sanctum;
@@ -325,6 +327,43 @@ class ProfileTest extends TestCase
             'min_price',
             'max_price',
         ]);
+    }
+
+    /** @test */
+    public function filter_profiles_by_price()
+    {
+        Sanctum::actingAs($this->user);
+
+        Profile::factory(['is_active' => 1])
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->has(Package::factory()->count(2), 'packages')
+            ->has(Review::factory()->count(5), 'reviews')
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
+            ->for(User::factory(), 'user')
+            ->count(10)
+            ->sequence(function ($sequence) {
+                return [
+                    'per_hour' => ($sequence->index + 1) * 10,
+                ];
+            })->create();
+
+        $response = $this->json('get', route('v1.profile.filter'), [
+            'min_price' => 10,
+            'max_price' => 50,
+            // 'number_of_reviews' => 5,
+            // 'number_of_rates' => 3.6,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonStructure(
+            [
+                'data' => [
+                    '*' => $this->expected_structure(true),
+                ],
+            ],
+        );
     }
 
     protected function expected_structure($has_category = false)

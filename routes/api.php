@@ -57,6 +57,8 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::get('reviews/{profile}', [ReviewController::class, 'show'])->name('reviews.show');
 
+    Route::get('profile/filter', [ProfileController::class, 'filter'])->name('profile.filter');
+
     Route::get('profile/{profile}', [ProfileController::class, 'show_by_id'])->name('profile.show_by_id');
 
     Route::get('profile/{profile}/packages', [PackageController::class, 'show'])->name('profile.package.show');
