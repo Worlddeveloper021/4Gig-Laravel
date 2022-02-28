@@ -125,6 +125,7 @@ class ProfileController extends Controller
         return response()->json([
             'min_price' => Profile::min('per_hour'),
             'max_price' => Profile::max('per_hour'),
+            'max_review' => Profile::withCount('reviews')->get()->max('reviews_count'),
         ]);
     }
 

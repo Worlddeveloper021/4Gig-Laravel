@@ -313,6 +313,7 @@ class ProfileTest extends TestCase
         Profile::factory()
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->has(Review::factory()->count(5), 'reviews')
             ->for(User::factory())
             ->count(10)
             ->create([
@@ -326,6 +327,7 @@ class ProfileTest extends TestCase
         $response->assertJsonStructure([
             'min_price',
             'max_price',
+            'max_review',
         ]);
     }
 
