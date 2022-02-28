@@ -68,7 +68,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
     Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
-    Route::get('profiles/{category}/filter', [ProfileController::class, 'filter'])->name('profile.filter');
+    Route::get('profiles/filter/{category}', [ProfileController::class, 'filter'])->name('profile.filter');
     Route::get('profiles/min-max-price', [ProfileController::class, 'min_max_price'])->name('profile.min_max_price');
 
     Route::middleware('auth:sanctum')->group(function () {
