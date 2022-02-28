@@ -339,7 +339,7 @@ class ProfileTest extends TestCase
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->has(Package::factory()->count(2), 'packages')
             ->has(Review::factory()->count(5), 'reviews')
-            ->for(Category::factory(), 'category')
+            ->for($category = Category::factory(), 'category')
             ->for(Category::factory(), 'sub_category')
             ->for(User::factory(), 'user')
             ->count(10)
@@ -349,7 +349,9 @@ class ProfileTest extends TestCase
                 ];
             })->create();
 
-        $response = $this->json('get', route('v1.profile.filter'), [
+        $category = $category->create();
+
+        $response = $this->json('get', route('v1.profile.filter', $category->id), [
             'min_price' => 10,
             'max_price' => 50,
             // 'number_of_reviews' => 5,

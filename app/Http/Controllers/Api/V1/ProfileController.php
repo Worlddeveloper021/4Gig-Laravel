@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProfileRequest;
@@ -127,7 +128,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function filter(Request $request)
+    public function filter(Request $request, Category $category)
     {
         $request->validate([
             'min_price' => 'nullable | numeric',
@@ -136,7 +137,9 @@ class ProfileController extends Controller
             'number_of_reviews' => 'nullable | numeric',
         ]);
 
-        $profiles = Profile::with('user', 'skills', 'spoken_languages')->where('is_active', true)
+        $profiles = Profile::with('user', 'skills', 'spoken_languages')
+            ->where('is_active', true)
+            ->where('category_id', $category->id)
             ->when($request->min_price, function ($query, $min_price) {
                 $query->where('per_hour', '>=', $min_price);
             })->when($request->max_price, function ($query, $max_price) {
