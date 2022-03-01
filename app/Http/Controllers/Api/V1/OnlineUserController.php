@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
+use App\Models\Profile;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\UserResource;
+use App\Http\Resources\Api\V1\ProfileResource;
 
 class OnlineUserController extends Controller
 {
     public function index()
     {
-        $users = User::get()->filter(function ($user) {
-            return $user->is_online();
+        $profiles = Profile::get()->filter(function ($profile) {
+            return $profile->user->is_online();
         });
 
-        return response()->json(UserResource::collection($users));
+        return response()->json(ProfileResource::collection($profiles));
     }
 }

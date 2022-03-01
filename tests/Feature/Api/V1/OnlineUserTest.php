@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Profile;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -56,9 +57,11 @@ class OnlineUserTest extends TestCase
     {
         User::factory()
             ->count(5)
+            ->has(Profile::factory())
             ->create();
 
         User::factory()
+            ->has(Profile::factory())
             ->count(10)
             ->create()
             ->each(function ($user) {
