@@ -32,7 +32,10 @@ class LoginController extends Controller
 
         $token = $user->createToken($request->get('device_name', 'test-token'))->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'user_type' => $this->get_user_type($user),
+        ]);
     }
 
     private function check_user_exists($user)
@@ -46,6 +49,17 @@ class LoginController extends Controller
     {
         if (! Hash::check($password, $user->password)) {
             $this->validationError('email', 'Email or Password Is Incorrect');
+        }
+    }
+
+    private function get_user_type(User $user)
+    {
+        if ($user->profile) {
+            return 'seller';
+        }
+
+        if ($user->customer) {
+            return 'buyer';
         }
     }
 }
