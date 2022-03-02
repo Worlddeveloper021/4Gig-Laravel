@@ -340,8 +340,8 @@ class ProfileTest extends TestCase
             ->has(Skill::factory()->count(4))
             ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
             ->has(Package::factory()->count(2), 'packages')
-            ->has(Review::factory()->count(5), 'reviews')
-            ->for($category = Category::factory(), 'category')
+            ->has(Review::factory()->count(rand(2, 10)), 'reviews')
+            ->for(Category::factory(), 'category')
             ->for(Category::factory(), 'sub_category')
             ->for(User::factory(), 'user')
             ->count(10)
@@ -351,13 +351,13 @@ class ProfileTest extends TestCase
                 ];
             })->create();
 
-        $category = $category->create();
-
-        $response = $this->json('get', route('v1.profile.filter', $category->id), [
+        $response = $this->json('get', route('v1.profile.filter', ['category' => 1]), [
             'min_price' => 10,
             'max_price' => 50,
-            // 'number_of_reviews' => 5,
-            // 'number_of_rates' => 3.6,
+            // 'min_rates' => 3,
+            // 'max_rates' => 4,
+            // 'min_reviews' => 2,
+            // 'max_reviews' => 5,
         ]);
 
         $response->assertOk();

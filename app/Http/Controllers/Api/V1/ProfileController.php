@@ -134,8 +134,10 @@ class ProfileController extends Controller
         $request->validate([
             'min_price' => 'nullable | numeric',
             'max_price' => 'nullable | numeric',
-            'number_of_rates' => 'nullable | numeric',
-            'number_of_reviews' => 'nullable | numeric',
+            'min_rates' => 'nullable | numeric',
+            'max_rates' => 'nullable | numeric',
+            'min_reviews' => 'nullable | numeric',
+            'max_reviews' => 'nullable | numeric',
         ]);
 
         $profiles = Profile::with('user', 'skills', 'spoken_languages')
@@ -151,12 +153,20 @@ class ProfileController extends Controller
 
         $collection = $profiles->getCollection();
 
-        if ($number_of_rates = $request->number_of_rates) {
-            $collection = $collection->where('reviews_avg_rate', $number_of_rates);
+        if ($min_rates = $request->min_rates) {
+            $collection = $collection->where('reviews_avg_rate', '>=', $min_rates);
         }
 
-        if ($number_of_reviews = $request->number_of_reviews) {
-            $collection = $collection->where('reviews_count', $number_of_reviews);
+        if ($max_rates = $request->max_rates) {
+            $collection = $collection->where('reviews_avg_rate', '<=', $max_rates);
+        }
+
+        if ($min_reviews = $request->min_reviews) {
+            $collection = $collection->where('reviews_count', '>=', $min_reviews);
+        }
+
+        if ($max_reviews = $request->max_reviews) {
+            $collection = $collection->where('reviews_count', '<=', $max_reviews);
         }
 
         $profiles->setCollection($collection);
