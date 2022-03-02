@@ -370,6 +370,40 @@ class ProfileTest extends TestCase
         );
     }
 
+    /** @test */
+    public function search_profiles_by_name()
+    {
+        Sanctum::actingAs($this->user);
+
+        Profile::factory(['is_active' => 1])
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->has(Package::factory()->count(2), 'packages')
+            ->has(Review::factory()->count(rand(2, 10)), 'reviews')
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
+            ->for(User::factory(), 'user')
+            ->count(10)
+            ->sequence(function ($sequence) {
+                return [
+                    'per_hour' => ($sequence->index + 1) * 10,
+                ];
+            })->create();
+
+        $response = $this->json('get', route('v1.profile.search', ['category' => 1]), [
+            'name' => 'ja',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonStructure(
+            [
+                'data' => [
+                    '*' => $this->expected_structure(true),
+                ],
+            ],
+        );
+    }
+
     protected function expected_structure($has_category = false)
     {
         $categories = (! $has_category) ? [] : [

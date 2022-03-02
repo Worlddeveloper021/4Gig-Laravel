@@ -173,4 +173,21 @@ class ProfileController extends Controller
 
         return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
     }
+
+    public function search(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'nullable | string',
+        ]);
+
+        $profiles = Profile::with('user', 'skills', 'spoken_languages')
+            ->where('is_active', true)
+            ->where('category_id', $category->id)
+            ->when($request->name, function ($query, $name) {
+                $query->where('first_name', 'like', '%'.$name.'%');
+                $query->orWhere('last_name', 'like', '%'.$name.'%');
+            })->paginate();
+
+        return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
+    }
 }
