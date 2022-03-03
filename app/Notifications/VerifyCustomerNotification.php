@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -10,14 +11,16 @@ class VerifyCustomerNotification extends Notification
 {
     use Queueable;
 
+    private $user;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,7 +31,7 @@ class VerifyCustomerNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [];
+        return ['mail'];
     }
 
     /**
@@ -40,9 +43,9 @@ class VerifyCustomerNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Verify Email Address')
+            ->line('welcome to our application!')
+            ->line('Your Verify Code : '.$this->user->verify_code);
     }
 
     /**

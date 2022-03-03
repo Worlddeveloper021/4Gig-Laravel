@@ -2,26 +2,16 @@
 
 namespace App\Notifications;
 
-use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
+use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class VerifyEmailNotification extends BaseVerifyEmail
+class VerifyEmailNotification extends Notification
 {
     protected $token;
 
-    public function __contruct($token)
+    public function __construct($token)
     {
         $this->token = $token;
-    }
-
-    /**
-     * Get the verification URL for the given notifiable.
-     *
-     * @param  mixed  $notifiable
-     * @return string
-     */
-    protected function verificationUrl($notifiable)
-    {
-        return 'ok';
     }
 
     /**
@@ -32,6 +22,14 @@ class VerifyEmailNotification extends BaseVerifyEmail
      */
     public function via($notifiable)
     {
-        return [/*'mail'*/];
+        return ['mail'];
+    }
+
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->subject('Verify Email Address')
+            ->line('Welcome to our application!')
+            ->line('Your Verify Code : '.$this->token);
     }
 }
