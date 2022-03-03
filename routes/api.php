@@ -83,6 +83,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
         Route::post('profile/packages', [PackageController::class, 'store'])->name('profile.package.store');
 
+        Route::get('customers/show/orders', [CustomerController::class, 'get_orders'])->name('customer.orders');
         Route::post('customers/card', [CustomerController::class, 'store_card'])->name('customers.card.store');
         Route::post('reviews/{profile}', [ReviewController::class, 'store'])->name('reviews.store');
 

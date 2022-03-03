@@ -5,7 +5,10 @@ namespace Tests\Feature\Api\V1;
 use Notification;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Category;
 use App\Models\Customer;
+use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -110,5 +113,25 @@ class CustomerTest extends TestCase
             'email' => $user->email,
             'fcm_key' => '::fcm_key::',
         ]);
+    }
+
+    /** @test */
+    public function get_buyer_orders()
+    {
+        $user = User::factory(['mobile' => '0912345678'])->create();
+        Sanctum::actingAs($user);
+
+        $parent_category = Category::factory()->create();
+        Category::factory()->create(['parent_id' => $parent_category->id]);
+
+        Order::factory()
+            ->for(Customer::factory(['user_id' => $user->id]))
+            ->count(5)
+            ->create();
+
+        $response = $this->json('get', route('v1.customer.orders'));
+
+        $response->assertOk();
+        $response->assertJsonCount(5, 'data');
     }
 }

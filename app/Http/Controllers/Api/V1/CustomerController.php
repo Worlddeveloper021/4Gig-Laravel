@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\Api\V1\OrderResource;
 
 class CustomerController extends Controller
 {
@@ -128,5 +129,16 @@ class CustomerController extends Controller
         return response()->json([
             'token' => $token,
         ]);
+    }
+
+    public function get_orders()
+    {
+        if (! $customer = auth()->user()->customer) {
+            return $this->validationError('customer', 'Customer not found');
+        }
+
+        $orders = $customer->orders()->paginate();
+
+        return response()->json(OrderResource::collection($orders)->response()->getData(true));
     }
 }
