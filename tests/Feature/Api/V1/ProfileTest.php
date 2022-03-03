@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\V1;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Skill;
 use App\Models\Review;
 use App\Models\Package;
@@ -402,6 +403,22 @@ class ProfileTest extends TestCase
                 ],
             ],
         );
+    }
+
+    /** @test */
+    public function get_seller_orders()
+    {
+        Sanctum::actingAs($this->user);
+
+        Order::factory()
+            ->for(Profile::factory(['user_id' => $this->user->id]))
+            ->count(5)
+            ->create();
+
+        $response = $this->json('get', route('v1.profile.orders'));
+
+        $response->assertOk();
+        $response->assertJsonCount(5, 'data');
     }
 
     protected function expected_structure($has_category = false)

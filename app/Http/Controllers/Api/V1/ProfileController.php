@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProfileRequest;
+use App\Http\Resources\Api\V1\OrderResource;
 use App\Http\Resources\Api\V1\ProfileResource;
 
 class ProfileController extends Controller
@@ -189,5 +190,18 @@ class ProfileController extends Controller
             })->paginate();
 
         return response()->json(ProfileResource::collection($profiles)->response()->getData(true));
+    }
+
+    public function get_orders()
+    {
+        $profile = auth()->user()->profile;
+
+        if (! $profile) {
+            return $this->validationError('error', 'Profile not found.');
+        }
+
+        $orders = $profile->orders()->paginate();
+
+        return response()->json(OrderResource::collection($orders)->response()->getData(true));
     }
 }

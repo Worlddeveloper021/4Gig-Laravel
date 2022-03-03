@@ -103,4 +103,9 @@ class Profile extends Model implements HasMedia
     {
         return $this->hasMany(Package::class);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
