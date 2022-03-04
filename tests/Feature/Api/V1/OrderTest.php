@@ -59,7 +59,7 @@ class OrderTest extends TestCase
             'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
-        $response->assertJsonValidationErrorFor('package_id');
+        $response->assertUnprocessable();
 
         $this->assertDatabaseMissing('orders', [
             'customer_id' => $customer->id,
@@ -110,7 +110,7 @@ class OrderTest extends TestCase
             'call_type' => Order::CALL_TYPE_VIDEO,
         ]);
 
-        $response->assertJsonValidationErrors(['user']);
+        $response->assertUnprocessable();
 
         $this->assertDatabaseMissing('orders', [
             'customer_id' => 1,

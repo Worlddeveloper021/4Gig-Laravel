@@ -64,8 +64,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['email'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -81,8 +80,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['email'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -98,8 +96,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['password'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -115,8 +112,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => '12345',
         ]);
 
-        $response->assertJsonValidationErrors(['password'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -132,8 +128,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => '12345',
         ]);
 
-        $response->assertJsonValidationErrors(['password'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -149,8 +144,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => '',
         ]);
 
-        $response->assertJsonValidationErrors(['password'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }
@@ -166,8 +160,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
         ]);
 
-        $response->assertJsonValidationErrors(['password'])
-            ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         Notification::assertNothingSent();
     }

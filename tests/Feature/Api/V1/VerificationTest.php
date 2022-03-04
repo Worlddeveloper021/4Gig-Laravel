@@ -47,8 +47,7 @@ class VerificationTest extends TestCase
             'verify_code' => '654321',
         ]);
 
-        $response->assertJsonValidationErrors(['verify_code'])
-                ->assertUnprocessable();
+        $response->assertUnprocessable();
 
         $this->assertDatabaseHas('users', [
             'id' => $this->user->id,

@@ -55,8 +55,7 @@ class ForgotPasswordTest extends TestCase
             'email' => 'wrong@email.com',
         ]);
 
-        $response->assertUnprocessable()
-            ->assertJsonStructure(['message', 'errors']);
+        $response->assertUnprocessable();
 
         $this->assertDatabaseCount('password_resets', 0);
         $this->assertDatabaseMissing('password_resets', [
@@ -98,8 +97,7 @@ class ForgotPasswordTest extends TestCase
             'token' => '654321',
         ]);
 
-        $response->assertUnprocessable()
-                ->assertJsonStructure(['message', 'errors' => ['token']]);
+        $response->assertUnprocessable();
     }
 
     /** @test */
