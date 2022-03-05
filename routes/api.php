@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlanController;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Controllers\Api\V1\AgoraController;
 use App\Http\Controllers\Api\V1\LoginController;
@@ -71,6 +72,9 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('profiles/filter/{category}', [ProfileController::class, 'filter'])->name('profile.filter');
     Route::get('profiles/search/{category}', [ProfileController::class, 'search'])->name('profile.search');
     Route::get('profiles/min-max-price', [ProfileController::class, 'min_max_price'])->name('profile.min_max_price');
+
+    Route::post('plans', [PlanController::class, 'store'])->name('plans.store');
+    Route::put('plans/{plan}', [PlanController::class, 'update'])->name('plans.update');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
