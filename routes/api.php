@@ -73,6 +73,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
     Route::get('profiles/search/{category}', [ProfileController::class, 'search'])->name('profile.search');
     Route::get('profiles/min-max-price', [ProfileController::class, 'min_max_price'])->name('profile.min_max_price');
 
+    Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
     Route::post('plans', [PlanController::class, 'store'])->name('plans.store');
     Route::put('plans/{plan}', [PlanController::class, 'update'])->name('plans.update');
 
