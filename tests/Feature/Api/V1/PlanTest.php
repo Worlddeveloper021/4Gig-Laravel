@@ -85,7 +85,7 @@ class PlanTest extends TestCase
             ],
         ]);
     }
-    
+
     /** @test */
     public function user_can_get_active_plans()
     {

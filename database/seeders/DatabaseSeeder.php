@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use DB;
+use App\Models\Plan;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Skill;
@@ -95,5 +96,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Order::factory()->create();
+
+        Plan::factory(['status' => Plan::STATUS_ACTIVE])->count(5)->create();
+        Plan::factory(['status' => Plan::STATUS_INACTIVE])->count(5)->create();
     }
 }

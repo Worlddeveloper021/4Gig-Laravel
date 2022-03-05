@@ -9,10 +9,9 @@ use App\Http\Resources\Api\V1\PlanResource;
 
 class PlanController extends Controller
 {
-
     public function index(Request $request)
     {
-        $plans = Plan::when($request->input('get_actives', 0) == 1, function($query) {
+        $plans = Plan::when($request->input('get_actives', 0) == 1, function ($query) {
             $query->where('status', Plan::STATUS_ACTIVE);
         })->paginate();
 
