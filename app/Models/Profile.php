@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -26,6 +27,7 @@ class Profile extends Model implements HasMedia
         'video_presentation',
         'portfolio',
         'is_active',
+        'order',
     ];
 
     protected $casts = [
@@ -41,6 +43,10 @@ class Profile extends Model implements HasMedia
 
     const INACTIVE = 0;
 
+    const ORDER_ACTIVE = 1;
+
+    const ORDER_INACTIVE = 0;
+
     const FEMALE = 0;
 
     const MALE = 1;
@@ -54,6 +60,13 @@ class Profile extends Model implements HasMedia
         self::FEMALE => 'Female',
         self::MALE => 'Male',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('ancient', function (Builder $builder) {
+            $builder->orderBy('order', 'desc');
+        });
+    }
 
     public function registerMediaCollections(): void
     {
@@ -107,5 +120,10 @@ class Profile extends Model implements HasMedia
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
     }
 }

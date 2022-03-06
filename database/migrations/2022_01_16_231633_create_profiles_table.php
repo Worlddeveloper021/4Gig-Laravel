@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Profile;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -27,6 +28,7 @@ class CreateProfilesTable extends Migration
             $table->tinyInteger('is_active')->index();
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->foreignId('sub_category_id')->nullable()->constrained('categories');
+            $table->integer('order')->index()->default(Profile::ORDER_INACTIVE);
             $table->timestamps();
         });
     }

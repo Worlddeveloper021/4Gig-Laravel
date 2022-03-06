@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\FirebaseController;
 use App\Http\Controllers\Api\V1\RegistgerController;
 use App\Http\Controllers\Api\V1\OnlineUserController;
 use App\Http\Controllers\Api\V1\AccessTokenController;
+use App\Http\Controllers\Api\V1\SubscriptionController;
 use App\Http\Controllers\Api\V1\SocialAccountController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 
@@ -99,5 +100,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
 
         Route::post('orders/{profile}', [OrderController::class, 'store'])->name('orders.store');
         Route::put('orders/{order}/status', [OrderController::class, 'update_status'])->name('orders.update.status');
+
+        Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
     });
 });
