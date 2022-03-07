@@ -20,6 +20,7 @@ class CreatePackagesTable extends Migration
             $table->integer('duration');
             $table->string('description');
             $table->string('on_demand');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -21,6 +21,7 @@ class PackageFactory extends Factory
             'duration' => $this->faker->randomElement([30, 60]),
             'description' => $this->faker->sentence(),
             'on_demand' => $this->faker->randomElement(Package::ON_DEMAND_VALUES),
+            'status' => $this->faker->randomElement(Package::STATUSES),
         ];
     }
 }

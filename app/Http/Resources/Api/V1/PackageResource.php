@@ -20,6 +20,7 @@ class PackageResource extends JsonResource
             'duration' => $this->duration,
             'description' => $this->description,
             'on_demand' => $this->on_demand,
+            'status' => $this->status_name,
             'profile' => new ProfileResource($this->whenLoaded('profile')),
         ];
     }

@@ -110,4 +110,41 @@ class PackageTest extends TestCase
             ],
         ]);
     }
+
+    /** @test */
+    public function it_can_update_package()
+    {
+        $user = User::factory()->create();
+        $profile = Profile::factory(['user_id' => $user->id])->create();
+        $package = Package::factory()->create(['profile_id' => $profile->id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('put', route('v1.profile.package.update', $package->id), [
+            'price' => '100',
+            'duration' => '30',
+            'description' => 'Package description',
+            'on_demand' => 'available',
+            'status' => Package::STATUS_ACTIVE,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'id',
+            'price',
+            'duration',
+            'description',
+            'on_demand',
+            'status',
+        ]);
+
+        $this->assertDatabaseHas('packages', [
+            'id' => $package->id,
+            'price' => '100',
+            'duration' => '30',
+            'description' => 'Package description',
+            'on_demand' => 'available',
+            'status' => Package::STATUS_ACTIVE,
+        ]);
+    }
 }
