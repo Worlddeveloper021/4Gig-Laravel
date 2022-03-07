@@ -13,7 +13,9 @@ class PackageController extends Controller
 {
     public function show(Profile $profile)
     {
-        $packages = $profile->packages;
+        $packages = $profile->packages()->when(request('only_actives') == 1, function ($query) {
+            $query->where('status', Package::STATUS_ACTIVE);
+        })->get();
 
         return response()->json(PackageResource::collection($packages));
     }

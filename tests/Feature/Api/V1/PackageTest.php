@@ -88,7 +88,7 @@ class PackageTest extends TestCase
     }
 
     /** @test */
-    public function it_can_show_packages_of_a_profile()
+    public function it_can_show_all_packages_of_a_profile()
     {
         $user = User::factory()->create();
         $profile = Profile::factory(['user_id' => $user->id])->create();
@@ -109,6 +109,31 @@ class PackageTest extends TestCase
                 'on_demand',
             ],
         ]);
+    }
+
+    /** @test */
+    public function it_can_show_only_active_packages_of_a_profile()
+    {
+        $user = User::factory()->create();
+        $profile = Profile::factory(['user_id' => $user->id])->create();
+        Package::factory()->count(5)->create(['profile_id' => $profile->id, 'status' => Package::STATUS_ACTIVE]);
+        Package::factory()->count(5)->create(['profile_id' => $profile->id, 'status' => Package::STATUS_INACTIVE]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('get', route('v1.profile.package.show', ['profile' => $profile->id, 'only_actives' => 1]));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'price',
+                'duration',
+                'description',
+                'on_demand',
+            ],
+        ]);
+        $response->assertJsonCount(5);
     }
 
     /** @test */
