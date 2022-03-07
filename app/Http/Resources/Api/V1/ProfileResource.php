@@ -38,6 +38,7 @@ class ProfileResource extends JsonResource
             'rate' => number_format(round($this->reviews()->avg('rate'), 1, PHP_ROUND_HALF_DOWN), 1),
             'rate_count' => $this->reviews()->count(),
             'packages' => PackageResource::collection($this->whenLoaded('packages')),
+            'order' => $this->order,
         ];
     }
 }
