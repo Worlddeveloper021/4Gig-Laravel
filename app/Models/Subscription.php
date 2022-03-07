@@ -52,6 +52,8 @@ class Subscription extends Model
         static::saved(function ($subscription) {
             if ($subscription->status === self::STATUS_ACTIVE) {
                 $subscription->profile->update(['order' => Profile::ORDER_ACTIVE]);
+            } else {
+                $subscription->profile->update(['order' => Profile::ORDER_INACTIVE]);
             }
         });
     }
