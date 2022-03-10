@@ -34,7 +34,7 @@ class SubscriptionTest extends TestCase
 
         $response = $this->json('post', route('v1.subscriptions.store'), [
             'plan_id' => $plan->id,
-            'payment_id' => 'PAYID-MIEEYEQ9AT89072W84764009',
+            'payment_id' => '::PAYID::',
         ]);
 
         $response->assertOk()
@@ -55,7 +55,7 @@ class SubscriptionTest extends TestCase
             'plan_id' => $plan->id,
             'price' => $plan->price,
             'duration' => $plan->duration,
-            'payment_id' => 'PAYID-MIEEYEQ9AT89072W84764009',
+            'payment_id' => '::PAYID::',
             'payment_status' => Subscription::PAYMENT_STATUS_CREATED,
             'status' => Subscription::STATUS_INACTIVE,
             'start_date' => now()->startOfDay(),
@@ -119,6 +119,45 @@ class SubscriptionTest extends TestCase
         $this->assertDatabaseHas('profiles', [
             'id' => $profile->id,
             'order' => Profile::ORDER_ACTIVE,
+        ]);
+    }
+
+    /** @test */
+    public function it_can_get_all_stored_subscriptions()
+    {
+        $user = User::factory()->create();
+        $profile = Profile::factory(['user_id' => $user->id])
+            ->has(Skill::factory()->count(4))
+            ->has(SpokenLanguage::factory()->count(4), 'spoken_languages')
+            ->for(Category::factory(), 'category')
+            ->for(Category::factory(), 'sub_category')
+            ->create();
+
+        $plan = Plan::factory()->create();
+
+        Subscription::factory(['profile_id' => $profile->id, 'plan_id' => $plan->id])
+            ->count(5)
+            ->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('get', route('v1.subscriptions.show'));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'price',
+                    'duration',
+                    'start_date',
+                    'end_date',
+                    'payment_id',
+                    'payment_status',
+                    'status',
+                    'plan',
+                ],
+            ],
         ]);
     }
 }

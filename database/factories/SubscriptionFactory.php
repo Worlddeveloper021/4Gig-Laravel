@@ -17,17 +17,17 @@ class SubscriptionFactory extends Factory
     {
         return [
             'price' => function (array $attributes) {
-                return Plan::find($attributes['profile_id'])->price;
+                return Plan::find($attributes['plan_id'])->price;
             },
             'duration' => function (array $attributes) {
-                return Plan::find($attributes['profile_id'])->duration;
+                return Plan::find($attributes['plan_id'])->duration;
             },
             'payment_id' => 'PAYID-MIEEYEQ9AT89072W84764009',
             'payment_status' => $this->faker->randomElement(Subscription::PAYMENT_STATUSES),
             'status' => $this->faker->randomElement(Subscription::STATUSES),
             'start_date' => now()->startOfDay(),
             'end_date' => function (array $attributes) {
-                return now()->addDays(Plan::find($attributes['profile_id'])->duration)->endOfDay();
+                return now()->addDays(Plan::find($attributes['plan_id'])->duration)->endOfDay();
             },
         // 'end_date' => now()->addDays($plan->duration)->endOfDay(),
         ];

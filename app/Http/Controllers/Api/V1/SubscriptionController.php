@@ -50,14 +50,22 @@ class SubscriptionController extends Controller
         return response()->json(SubscriptionResource::make($subscription->refresh()));
     }
 
+    public function show()
+    {
+        if (! $profile = auth()->user()->profile) {
+            return $this->validationError('message', 'Profile not found');
+        }
+
+        return response()->json(SubscriptionResource::collection($profile->subscriptions()->paginate())->response()->getData());
+    }
+
     private function get_payment_status($payment_id)
     {
-        return Subscription::PAYMENT_STATUS_APPROVED;
-        // $paypal = new PayPal;
-        // $paypal->getAccessToken();
+        $paypal = new PayPal;
+        $paypal->getAccessToken();
 
-        // $response = $paypal->getPaymentDetails($payment_id);
+        $response = $paypal->getPaymentDetails($payment_id);
 
-        // return $response['state'] ?? Subscription::PAYMENT_STATUS_CREATED;
+        return $response['state'] ?? Subscription::PAYMENT_STATUS_CREATED;
     }
 }

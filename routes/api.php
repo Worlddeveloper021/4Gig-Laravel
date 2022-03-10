@@ -102,6 +102,7 @@ Route::name('v1.')->prefix('v1')->group(function () {
         Route::post('orders/{profile}', [OrderController::class, 'store'])->name('orders.store');
         Route::put('orders/{order}/status', [OrderController::class, 'update_status'])->name('orders.update.status');
 
+        Route::get('subscriptions/show', [SubscriptionController::class, 'show'])->name('subscriptions.show');
         Route::post('subscriptions', [SubscriptionController::class, 'store'])->name('subscriptions.store');
     });
 });
